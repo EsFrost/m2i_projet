@@ -1,1 +1,12 @@
-photography site inspired (stolen LUL) from viewbug
+photography site inspired from viewbug
+
+Initial features:
+User crud for photos
+
+Todo: 
+Add db structure file (draw io)
+Add media content
+Add text content
+Create the maquette
+Populate the cahier
+Come up with better name for app
