@@ -10,3 +10,6 @@ Add text content
 Create the maquette
 Populate the cahier
 Come up with better name for app
+
+Site slogan:
+photoStockage - Share a photo, share an experience / Sharing photos and experiences
