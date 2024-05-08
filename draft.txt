@@ -1,0 +1,19 @@
+photography site inspired from viewbug
+
+Initial features:
+User crud for photos
+
+Todo: 
+Add db structure file (draw io)
+Add media content
+Add text content
+Create the maquette
+Come up with better name for app (done)
+Start the basic UI
+Describe layout and functionality
+Start cahier de charges (has to be word document because reasons)
+Populate the cahier
+Learn / use figma for maquettage
+
+Site slogan:
+photoStockage - Share a photo, share an experience / Sharing photos and experiences
