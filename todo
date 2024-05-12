@@ -19,3 +19,14 @@ make site dynamic
 final touches
 
 create animation (use code from the other project)
+
+===============================================================================================================================================================================================
+
+frontpage:
+
+takes 20-30 random pictures from photo table and displays them to homepage
+
+storage:
+
+when a user uploads a photo it automatically creates a folder with the user name which has a folder with the year -> and finally month
+photos have the date they were uploaded, the user's name and a random string as name
