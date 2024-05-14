@@ -31,4 +31,4 @@ storage:
 when a user uploads a photo it automatically creates a folder with the user name which has a folder with the year -> and finally month
 photos have the date they were uploaded, the user's name and a random string as name
 
-updated 13/05/24
+updated 14/05/24
