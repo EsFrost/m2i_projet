@@ -3,18 +3,20 @@ import Image from 'next/image'
 import logoFull from '../../../public/logo_full.png'
 import Link from 'next/link'
 
-export default function ContactUs () {
-  return (
-    <div className='min-h-[100vh] flex px-[5rem] md:px-5 sm:px-0 mx-auto'>
-         <div className="post-card flex justify-center divide-x divide-solid divide-blue-900 border-blue-900 border-solid border-2 mt-[5rem] outline outline-2 outline-offset-[15px] outline-blue-900 p-10 lgcustom:flex-col lgcustom:items-center lgcustom:divide-none lgcustom:text-center usm:outline-0 usm:border-0 usm:p-0">
-            <div className="left w-1/3 flex flex-col items-center xl:w-1/2 flex-wrap lgcustom:min-w-full pr-[0.25rem]">
+
+export default async function Account() {
+    return (
+        <div className='min-h-[100vh] flex px-[5rem] md:px-5 sm:px-0 mx-auto'>
+         <div className="post-card flex justify-center divide-x divide-solid divide-blue-900 border-blue-900 border-solid border-2 mt-[5rem] outline outline-2 
+                        outline-offset-[15px] outline-blue-900 p-10 lgcustom:flex-col lgcustom:items-center lgcustom:divide-none lgcustom:text-center usm:outline-0 usm:border-0 usm:p-0">
+            <div className="left w-1/2 flex flex-col items-center flex-wrap lgcustom:min-w-full pr-[0.25rem]">
                 <Image src={logoFull} width={0} height={0} sizes='100vw' alt='Site logo' className='w-[5rem] h-auto pt-24 mb-4' />
                 <p className='text-gray-600 mx-auto leading-relaxed text-base'>You can also contact us through email.</p>
                 <p className='text-gray-600 mx-auto leading-relaxed text-base'>Email: photostockage@photostockage.com</p>
                 <p className='text-gray-600 mx-auto leading-relaxed text-base'>Or through our social media links that can be found <Link href='/'>here</Link></p>
             </div>
 
-            <div className="right w-2/3 lgcustom:min-w-full">
+            <div className="right w-1/2 lgcustom:min-w-full">
                 <section className="text-gray-600 body-font relative">
                     <div className="container py-24 mx-auto">
                         <div className="flex flex-col text-center w-full mb-12">
@@ -51,8 +53,5 @@ export default function ContactUs () {
             </div>
         </div>
     </div>
-   
-    
-    
-  )
+    )
 }
