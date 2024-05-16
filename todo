@@ -31,4 +31,7 @@ storage:
 when a user uploads a photo it automatically creates a folder with the user name which has a folder with the year -> and finally month
 photos have the date they were uploaded, the user's name and a random string as name
 
-updated 14/05/24
+For the love of god finish the fucking UI (signin/signup/signout for example!)
+AND WRITE THE DAMN SPECS
+
+updated 16/05/24
