@@ -84,7 +84,7 @@ const pool = createPool({
 const userData = {
   id: 1,
   name: 'John Doe',
-  email: 'johndoe@example.com',
+  email: 'johndoe@example.com'
 };
 
 try {
