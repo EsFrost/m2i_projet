@@ -4,8 +4,8 @@ import Image from 'next/image'
 export const Hero = () => {
   return (
     <section className="text-gray-600 body-font px-[2rem]">
-        <div className="container mx-auto flex px-5 py-24 items-center">
-            <div className="flex-grow pr-24 flex items-start text-left mb-0 flex-col">
+        <div className="container mx-auto flex px-5 lgcustom:px-0 py-24 items-center">
+            <div className="flex-grow pr-24 lgcustom:pr-0 flex items-start text-left mb-0 flex-col">
                 <h1 className="title-font text-3xl mb-4 font-medium text-gray-900">
                     Share your photos. Download photos for your next project
                     <br className='inline-block' />Start here.
