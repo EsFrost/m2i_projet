@@ -6,7 +6,7 @@ import logoFull from '../../../public/logo_full.png'
 export const Footer = () => {
   return (
     <footer className='text-gray-600 body-font mt-[5rem]'>
-        <div className="container py-25 flex justify-between px-[5rem] mdcustom:flex-col mdcustom:justify-center mdcustom:items-center mdcustom:py-1">
+        <div className="container py-25 flex justify-between px-[5rem] md:px-0 md:flex-col md:justify-center md:items-center md:py-1">
             <div className='w-64 mx-0'>
                 <Link className='flex title-font font-medium items-center text-gray-900' href='/'>
                     <Image src={logoFull} width={0} height={0} sizes='100vw' alt='Site logo' className='max-w-[5rem] h-full' />
@@ -14,8 +14,8 @@ export const Footer = () => {
                 </Link>
                 <p className="mt-2 text-sm text-gray-500 ml-6">Share your photos, share your experience</p>
             </div>
-            <div className='flex mdcustom:flex-col mdcustom:justify-center mdcustom:mt-10 mdcustom:w-96 '>
-                <div className="flex flex-wrap pl-20 mb-10 mt-0 text-left">
+            <div className='flex md:mt-10'>
+                <div className="flex flex-wrap pl-20 mb-10 mt-0 text-left md:pl-0">
                     <div className="px-4 sm:px-0">
                         <h2 className='title-font font-medium text-gray-900 tracking-wideset mb-3'>Account</h2>
                         <nav className="list-none mb-10">
