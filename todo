@@ -35,7 +35,6 @@ For the love of god finish the fucking UI (signin/signup/signout for example!)
 AND WRITE THE DAMN SPECS
 
 
-! on mobile images have to be slightly bigger or remove padding so there is less white space
-! footer on mobile view can have the two areas next to other to save space
+~ on mobile images have to be slightly bigger or remove padding so there is less white space (maybe, because i want to maintain the same size for the pictures on all views)
 
-updated 20/05/24
+updated 21/05/24
