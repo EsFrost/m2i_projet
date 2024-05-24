@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import logoFull from '../../../public/logo_full.png'
+import { SignInButton,  SignedOut, SignUpButton } from '@clerk/nextjs'
 
 export const Header = () => {
     const logo = '@/src/app/media/logo_full.png'
@@ -21,14 +22,26 @@ export const Header = () => {
             
 
             <div className="inline-flex justify-end ml-0">
-                <button className="inline-flex items-center text-white bg-indigo-500 border-0 py-1 px-3 focus:outline-none hover:bg-indigo-600 rounded text-base mt-0 mdim:mt-3">
-                    Sign Up
-                </button>
-                <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-0 mdim:mt-3 ml-5">
-                    Login
-                </button>
+                <SignUpButton>
+                    <button className="inline-flex items-center text-white bg-indigo-500 border-0 py-1 px-3 focus:outline-none hover:bg-indigo-600 rounded text-base mt-0 mdim:mt-3">
+                        Sign Up
+                    </button>
+                </SignUpButton>
+
+                <SignedOut>
+                    <SignInButton>
+                        <button className='inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-0 mdim:mt-3 ml-5 text-inherit'>Login</button>
+                    </SignInButton>
+                </SignedOut>
             </div>
         </div>
     </header>
   )
 }
+
+
+/* 
+<SignedIn>
+    <UserButton />
+</SignedIn>
+*/
