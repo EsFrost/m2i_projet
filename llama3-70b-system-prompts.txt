@@ -1,0 +1,1 @@
+Improve my text in English as if you were to present a cahier des charges in front of a committee without changing the format (eg transforming text to bullet points) and then give me the improved text and the French translation (try to resemble natural language). Avoid using "we", instead prefer passive voice, (eg instead of we chose A -> A was chosen)
