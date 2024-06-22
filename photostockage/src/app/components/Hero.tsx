@@ -12,7 +12,7 @@ export const Hero = () => {
                     <br className='inline-block' />Start here.
                 </h1>
                 <p className="mb-9 leading-relaxed">
-                    Do you have photos you want to share with others? Do you want to find photos to use for you next project? Are you tired of copyright protected material? Then this site is the place to be.
+                    Do you have photos you want to share with others? Do you want to find photos to use for your next project? Are you tired of copyright protected material? Then this site is the place to be.
                     Start now by signing up or logging in.
                 </p>
                 <div className="flex justify-center">
