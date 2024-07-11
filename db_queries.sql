@@ -25,22 +25,28 @@ CREATE TABLE Photos (
 
 CREATE TABLE Likes (
     id TEXT PRIMARY KEY,
-    id_photo TEXT REFERENCES Photos(id),
-    id_user TEXT REFERENCES Users(id)
+    id_photo TEXT,
+    id_user TEXT,
+    FOREIGN KEY (id_photo) REFERENCES Photos(id),
+    FOREIGN KEY (id_user) REFERENCES Users(id)
 );
 
 CREATE TABLE Downloads (
     id TEXT PRIMARY KEY,
-    id_photo TEXT REFERENCES Photos(id),
-    id_user TEXT REFERENCES Users(id)
+    id_photo TEXT,
+    id_user TEXT,
+    FOREIGN KEY (id_photo) REFERENCES Photos(id),
+    FOREIGN KEY (id_user) REFERENCES Users(id)
 );
 
 CREATE TABLE Comments (
     id TEXT PRIMARY KEY,
     content TEXT,
-    id_photo TEXT REFERENCES Photos(id),
-    id_user TEXT REFERENCES Users(id),
-    status BOOLEAN DEFAULT false
+    id_photo TEXT,
+    id_user TEXT,
+    status BOOLEAN DEFAULT false,
+    FOREIGN KEY (id_photo) REFERENCES Photos(id),
+    FOREIGN KEY (id_user) REFERENCES Users(id)
 );
 
 CREATE TABLE Categories (
@@ -51,8 +57,10 @@ CREATE TABLE Categories (
 
 CREATE TABLE Photos_Categories (
     id TEXT PRIMARY KEY,
-    id_photo TEXT REFERENCES Photos(id),
-    id_category TEXT REFERENCES Categories(id)
+    id_photo TEXT,
+    id_category TEXT,
+    FOREIGN KEY (id_photo) REFERENCES Photos(id),
+    FOREIGN KEY (id_category) REFERENCES Categories(id)
 );
 
 --- Dummy Values ---
