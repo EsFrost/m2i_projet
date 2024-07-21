@@ -1,26 +1,29 @@
 --- Table creation ---
-DROP TABLE IF EXISTS Users;
-DROP TABLE IF EXISTS Photos;
-DROP TABLE IF EXISTS Likes;
-DROP TABLE IF EXISTS Comments;
-DROP TABLE IF EXISTS Downloads;
-DROP TABLE IF EXISTS Categories;
-DROP TABLE IF EXISTS Photos_Categories;
+DROP TABLE IF EXISTS Users CASCADE;
+DROP TABLE IF EXISTS Photos CASCADE;
+DROP TABLE IF EXISTS Likes CASCADE;
+DROP TABLE IF EXISTS Comments CASCADE;
+DROP TABLE IF EXISTS Downloads CASCADE;
+DROP TABLE IF EXISTS Categories CASCADE;
+DROP TABLE IF EXISTS Photos_Categories CASCADE;
 
 CREATE TABLE Users (
     id TEXT PRIMARY KEY,
-    username VARCHAR(25),
-    email VARCHAR(30) UNIQUE,
-    password VARCHAR(20),
-    access_level BOOLEAN DEFAULT false
+    username VARCHAR(25) NOT NULL,
+    email VARCHAR(30) UNIQUE NOT NULL,
+    password VARCHAR(20) NOT NULL,
+    access_level BOOLEAN DEFAULT false,
+    user_icon TEXT
 );
 
 CREATE TABLE Photos (
     id TEXT PRIMARY KEY,
-    user_id TEXT REFERENCES Users(id),
-    name VARCHAR(50),
+    user_id TEXT NOT NULL,
+    name VARCHAR(50) NOT NULL,
     description TEXT,
-    status BOOLEAN DEFAULT false
+    status BOOLEAN DEFAULT false,
+    FOREIGN KEY (user_id) REFERENCES Users(id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE Likes (
@@ -29,6 +32,7 @@ CREATE TABLE Likes (
     id_user TEXT,
     FOREIGN KEY (id_photo) REFERENCES Photos(id),
     FOREIGN KEY (id_user) REFERENCES Users(id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE Downloads (
@@ -37,22 +41,24 @@ CREATE TABLE Downloads (
     id_user TEXT,
     FOREIGN KEY (id_photo) REFERENCES Photos(id),
     FOREIGN KEY (id_user) REFERENCES Users(id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE Comments (
     id TEXT PRIMARY KEY,
-    content TEXT,
+    content TEXT NOT NULL,
     id_photo TEXT,
     id_user TEXT,
     status BOOLEAN DEFAULT false,
     FOREIGN KEY (id_photo) REFERENCES Photos(id),
     FOREIGN KEY (id_user) REFERENCES Users(id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE Categories (
     id TEXT PRIMARY KEY,
-    name VARCHAR(30),
-    description TEXT
+    name VARCHAR(30) NOT NULL,
+    description TEXT NOT NULL
 );
 
 CREATE TABLE Photos_Categories (
@@ -65,17 +71,17 @@ CREATE TABLE Photos_Categories (
 
 --- Dummy Values ---
 --- Insert data into Users table ---
-INSERT INTO Users (id, username, email, password, access_level) VALUES
-('550e8400-e29b-41d4-a716-446655440000', 'user1', 'user1@example.com', 'pass1', true),
-('550e8400-e29b-41d4-a716-446655440001', 'user2', 'user2@example.com', 'pass2', false),
-('550e8400-e29b-41d4-a716-446655440002', 'user3', 'user3@example.com', 'pass3', false),
-('550e8400-e29b-41d4-a716-446655440003', 'user4', 'user4@example.com', 'pass4', true),
-('550e8400-e29b-41d4-a716-446655440004', 'user5', 'user5@example.com', 'pass5', false),
-('550e8400-e29b-41d4-a716-446655440005', 'user6', 'user6@example.com', 'pass6', false),
-('550e8400-e29b-41d4-a716-446655440006', 'user7', 'user7@example.com', 'pass7', true),
-('550e8400-e29b-41d4-a716-446655440007', 'user8', 'user8@example.com', 'pass8', false),
-('550e8400-e29b-41d4-a716-446655440008', 'user9', 'user9@example.com', 'pass9', true),
-('550e8400-e29b-41d4-a716-446655440009', 'user10', 'user10@example.com', 'pass10', false);
+INSERT INTO Users (id, username, email, password, access_level, user_icon) VALUES
+('550e8400-e29b-41d4-a716-446655440000', 'user1', 'user1@example.com', 'pass1', true, ''),
+('550e8400-e29b-41d4-a716-446655440001', 'user2', 'user2@example.com', 'pass2', false, ''),
+('550e8400-e29b-41d4-a716-446655440002', 'user3', 'user3@example.com', 'pass3', false, ''),
+('550e8400-e29b-41d4-a716-446655440003', 'user4', 'user4@example.com', 'pass4', true, ''),
+('550e8400-e29b-41d4-a716-446655440004', 'user5', 'user5@example.com', 'pass5', false, ''),
+('550e8400-e29b-41d4-a716-446655440005', 'user6', 'user6@example.com', 'pass6', false, ''),
+('550e8400-e29b-41d4-a716-446655440006', 'user7', 'user7@example.com', 'pass7', true, ''),
+('550e8400-e29b-41d4-a716-446655440007', 'user8', 'user8@example.com', 'pass8', false, ''),
+('550e8400-e29b-41d4-a716-446655440008', 'user9', 'user9@example.com', 'pass9', true, ''),
+('550e8400-e29b-41d4-a716-446655440009', 'user10', 'user10@example.com', 'pass10', false, '');
 
 --- Insert data into Photos table ---
 INSERT INTO Photos (id, user_id, name, description, status) VALUES
