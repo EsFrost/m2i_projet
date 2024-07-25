@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS Photos_Categories CASCADE;
 
 CREATE TABLE Users (
     id TEXT PRIMARY KEY,
-    username VARCHAR(25) NOT NULL,
+    username VARCHAR(25) UNIQUE NOT NULL,
     email VARCHAR(30) UNIQUE NOT NULL,
     password VARCHAR(20) NOT NULL,
     access_level BOOLEAN DEFAULT false,
@@ -21,6 +21,7 @@ CREATE TABLE Photos (
     user_id TEXT NOT NULL,
     name VARCHAR(50) NOT NULL,
     description TEXT,
+    path TEXT NOT NULL,
     status BOOLEAN DEFAULT false,
     FOREIGN KEY (user_id) REFERENCES Users(id)
     ON DELETE CASCADE
@@ -46,7 +47,7 @@ CREATE TABLE Downloads (
 
 CREATE TABLE Comments (
     id TEXT PRIMARY KEY,
-    content TEXT NOT NULL,
+    comment TEXT NOT NULL,
     id_photo TEXT,
     id_user TEXT,
     status BOOLEAN DEFAULT false,
@@ -60,7 +61,6 @@ CREATE TABLE Categories (
     name VARCHAR(30) NOT NULL,
     description TEXT NOT NULL
 );
-
 CREATE TABLE Photos_Categories (
     id TEXT PRIMARY KEY,
     id_photo TEXT,
