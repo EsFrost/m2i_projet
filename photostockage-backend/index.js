@@ -5,6 +5,7 @@ const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
 const userRoute =require('./routes/userRoute')
 const photoRoute = require('./routes/photoRoute')
+const categoriesRoute = require('./routes/categoriesRoute')
 
 app.use(helmet())
 app.use(cors({
@@ -20,6 +21,7 @@ app.use(limiter)
 
 app.use('/user', userRoute)
 app.use('/photos', photoRoute)
+app.use('/categories', categoriesRoute)
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000")

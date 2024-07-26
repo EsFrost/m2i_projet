@@ -9,12 +9,12 @@ SELECT * FROM users where id = :id; ---
 --- View all users as guest / user ---
 SELECT username FROM Users; ---
 --- View categories ---
-SELECT * FROM categories;
+SELECT * FROM categories; ---
 --- Create account as user ---
 INSERT INTO users (id, username, email, password, user_icon)
 VALUES (:id, :username, :email, :password, :user_icon);
 --- View own photos ---
-SELECT * FROM photos WHERE user_id = :user_id;
+SELECT * FROM photos WHERE user_id = :user_id; ---
 --- Upload photo ---
 INSERT INTO photos (id, user_id, name, description, status)
 VALUES (:id, :user_id, :name, :description, :status);

@@ -1,8 +1,7 @@
 const { pool } = require('../utils/db')
 
 function getUsers() {
-    const req = `SELECT * FROM users`
-    return pool.query(req)
+    return pool.query(`SELECT * FROM users`)
 }
 
 function getUser(id) {
