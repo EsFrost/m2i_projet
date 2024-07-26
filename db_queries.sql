@@ -84,17 +84,17 @@ INSERT INTO Users (id, username, email, password, access_level, user_icon) VALUE
 ('550e8400-e29b-41d4-a716-446655440009', 'user10', 'user10@example.com', 'pass10', false, '');
 
 --- Insert data into Photos table ---
-INSERT INTO Photos (id, user_id, name, description, status) VALUES
-('660e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440000', 'Photo1', 'Description1', true),
-('660e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440001', 'Photo2', 'Description2', false),
-('660e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440002', 'Photo3', 'Description3', true),
-('660e8400-e29b-41d4-a716-446655440003', '550e8400-e29b-41d4-a716-446655440003', 'Photo4', 'Description4', false),
-('660e8400-e29b-41d4-a716-446655440004', '550e8400-e29b-41d4-a716-446655440004', 'Photo5', 'Description5', true),
-('660e8400-e29b-41d4-a716-446655440005', '550e8400-e29b-41d4-a716-446655440005', 'Photo6', 'Description6', false),
-('660e8400-e29b-41d4-a716-446655440006', '550e8400-e29b-41d4-a716-446655440006', 'Photo7', 'Description7', true),
-('660e8400-e29b-41d4-a716-446655440007', '550e8400-e29b-41d4-a716-446655440007', 'Photo8', 'Description8', false),
-('660e8400-e29b-41d4-a716-446655440008', '550e8400-e29b-41d4-a716-446655440008', 'Photo9', 'Description9', true),
-('660e8400-e29b-41d4-a716-446655440009', '550e8400-e29b-41d4-a716-446655440009', 'Photo10', 'Description10', false);
+INSERT INTO Photos (id, user_id, name, description, status, path) VALUES
+('660e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440000', 'Photo1', 'Description1', true, 'a'),
+('660e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440001', 'Photo2', 'Description2', false, 'b'),
+('660e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440002', 'Photo3', 'Description3', true, 'c'),
+('660e8400-e29b-41d4-a716-446655440003', '550e8400-e29b-41d4-a716-446655440003', 'Photo4', 'Description4', false, 'd'),
+('660e8400-e29b-41d4-a716-446655440004', '550e8400-e29b-41d4-a716-446655440004', 'Photo5', 'Description5', true, 'e'),
+('660e8400-e29b-41d4-a716-446655440005', '550e8400-e29b-41d4-a716-446655440005', 'Photo6', 'Description6', false, 'f'),
+('660e8400-e29b-41d4-a716-446655440006', '550e8400-e29b-41d4-a716-446655440006', 'Photo7', 'Description7', true, 'g'),
+('660e8400-e29b-41d4-a716-446655440007', '550e8400-e29b-41d4-a716-446655440007', 'Photo8', 'Description8', false, 'h'),
+('660e8400-e29b-41d4-a716-446655440008', '550e8400-e29b-41d4-a716-446655440008', 'Photo9', 'Description9', true, 'i'),
+('660e8400-e29b-41d4-a716-446655440009', '550e8400-e29b-41d4-a716-446655440009', 'Photo10', 'Description10', false, 'j');
 
 --- Insert data into Likes table ---
 INSERT INTO Likes (id, id_photo, id_user) VALUES
@@ -123,7 +123,7 @@ INSERT INTO Downloads (id, id_photo, id_user) VALUES
 ('880e8400-e29b-41d4-a716-446655440009', '660e8400-e29b-41d4-a716-446655440009', '550e8400-e29b-41d4-a716-446655440001');
 
 --- Insert data into Comments table ---
-INSERT INTO Comments (id, content, id_photo, id_user, status) VALUES
+INSERT INTO Comments (id, comment, id_photo, id_user, status) VALUES
 ('990e8400-e29b-41d4-a716-446655440000', 'Great photo!', '660e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440001', true),
 ('990e8400-e29b-41d4-a716-446655440001', 'Amazing shot!', '660e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440002', false),
 ('990e8400-e29b-41d4-a716-446655440002', 'Nice angle.', '660e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440003', true),

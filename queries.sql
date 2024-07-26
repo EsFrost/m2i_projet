@@ -1,13 +1,13 @@
 --- View photos as guest or normal user ---
-SELECT * FROM Photos WHERE status = true;
+SELECT * FROM Photos WHERE status = true; ---
 --- View photos as admin ---
-SELECT * FROM Photos;
+SELECT * FROM Photos; ---
 --- View all users as admin ---
-SELECT * FROM Users;
+SELECT * FROM Users; ---
 --- View particular user ---
-SELECT * FROM users where id = :id;
+SELECT * FROM users where id = :id; ---
 --- View all users as guest / user ---
-SELECT username FROM Users;
+SELECT username FROM Users; ---
 --- View categories ---
 SELECT * FROM categories;
 --- Create account as user ---
