@@ -7,6 +7,7 @@ const userRoute =require('./routes/userRoute')
 const photoRoute = require('./routes/photoRoute')
 const categoriesRoute = require('./routes/categoriesRoute')
 
+app.use(express.json())
 app.use(helmet())
 app.use(cors({
     origin: 'http://localhost:3000'
