@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const sanitizeHtml = require('sanitize-html')
 const validator = require('validator')
+const { v4: uuidv4 } = require('uuid')
 
 async function showActivePhotos(req, res) {
     try {
@@ -80,10 +81,81 @@ async function showUserPhotoById(req, res) {
     }
 }
 
+function newPhoto(req, res) {
+    let { name, description, path, status } = req.body
+    let user_id = req.params.id
+    let id = uuidv4()
+
+    if (status === undefined || status === '' || status === null || path === undefined || path === null || path === '') {
+        status = false
+    }
+
+    id = sanitizeHtml(id)
+    user_id = sanitizeHtml(user_id)
+    name = sanitizeHtml(name)
+    description = sanitizeHtml(description)
+    path = sanitizeHtml(path)
+    
+    if (validator.isUUID(user_id) && validator.isUUID(id) && (validator.isURL(path) || path === '' || path === null || path === undefined) && (status === true || status === false)) {
+        photoModel.createPhoto(id, user_id, name, description, path, status)
+        .then(() => {
+            res.status(201).json({ "message": `Photo ${name} created successfully!` })
+        })
+        .catch(err => {
+            res.status(500).json({ "error" : "Internal server error!", err})
+        })
+    }
+    else {
+        res.status(400).json({ "error" :'Invalid data!' })
+    }
+}
+
+function deletePhoto(req, res) {
+    let id = req.params.id
+    id = sanitizeHtml(id)
+    if (validator.isUUID(id)) {
+        photoModel.deletePhoto(id)
+            .then(() => {
+                res.status(201).json({ "message": `Photo deleted successfully!` })
+            })
+            .catch(err => {
+                res.status(500).json({ "error" : "Internal server error!", err})
+            })
+    }
+    else {
+        res.status(400).json({ "error" :'Invalid data!' })
+    }
+}
+
+function editPhoto(req, res) {
+    let id = req.params.id
+    let { name, description, status } = req.body
+
+    id = sanitizeHtml(id)
+    name = sanitizeHtml(name)
+    description = sanitizeHtml(description)
+
+    if (validator.isUUID(id) && (status === true || status === false) && name !== undefined && name !== '' && name !== null) {
+        photoModel.editPhoto(name, description, status, id)
+            .then(() => {
+                res.status(201).json({ "message": `Photo updated successfully!` })
+            })
+            .catch(err => {
+                res.status(500).json({ "error" : "Internal server error!", err})
+            })
+    }
+    else {
+        res.status(400).json({ "error" :'Invalid data!' })
+    }
+}
+
 module.exports = {
     showActivePhotos,
     showPhotos,
     showPhoto,
     showUserPhotos,
-    showUserPhotoById
+    showUserPhotoById,
+    newPhoto,
+    deletePhoto,
+    editPhoto
 }
