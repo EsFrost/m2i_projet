@@ -5,6 +5,8 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL
 })
 
+/* Connection test */
+
 // async function testConnection() {
 //     try {
 //         // Connect to the database

@@ -6,6 +6,8 @@ const rateLimit = require('express-rate-limit')
 const userRoute =require('./routes/userRoute')
 const photoRoute = require('./routes/photoRoute')
 const categoriesRoute = require('./routes/categoriesRoute')
+const likesRoute = require('./routes/likesRoute')
+const downloadsRoute = require('./routes/downloadsRoute')
 
 app.use(express.json())
 app.use(helmet())
@@ -23,6 +25,8 @@ app.use(limiter)
 app.use('/user', userRoute)
 app.use('/photos', photoRoute)
 app.use('/categories', categoriesRoute)
+app.use('/likes', likesRoute)
+app.use('/downloads', downloadsRoute)
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000")
