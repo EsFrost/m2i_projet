@@ -8,6 +8,7 @@ const photoRoute = require('./routes/photoRoute')
 const categoriesRoute = require('./routes/categoriesRoute')
 const likesRoute = require('./routes/likesRoute')
 const downloadsRoute = require('./routes/downloadsRoute')
+const commentsRoute = require('./routes/commentsRoute')
 
 app.use(express.json())
 app.use(helmet())
@@ -27,6 +28,7 @@ app.use('/photos', photoRoute)
 app.use('/categories', categoriesRoute)
 app.use('/likes', likesRoute)
 app.use('/downloads', downloadsRoute)
+app.use('/comments', commentsRoute)
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000")
