@@ -34,7 +34,6 @@ photos have the date they were uploaded, the user's name and a random string as 
 For the love of god finish the fucking UI (signin/signup/signout for example!)
 AND WRITE THE DAMN SPECS
 
-
 ~ on mobile images have to be slightly bigger or remove padding so there is less white space (maybe, because i want to maintain the same size for the pictures on all views)
 
-updated 28/08/24
+updated 30/08/24
