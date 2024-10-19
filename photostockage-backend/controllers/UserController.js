@@ -1,7 +1,8 @@
 const userModel = require("../models/UserModel");
 const bcrypt = require("bcryptjs");
-const { generateToken } = require("../utils/jwt");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const secret = process.env.JWT_SECRET;
 const sanitizeHtml = require("sanitize-html");
 const validator = require("validator");
 const { v4: uuidv4 } = require("uuid");
@@ -13,25 +14,41 @@ async function loginUser(req, res) {
 
   if (validator.isEmail(email) && validator.isAlphanumeric(password)) {
     try {
-      const result = await userModel.getUserByEmail(email);
-      if (result.rows.length === 0) {
+      const user = await userModel.getUserByEmail(email);
+      if (user.rows.length === 0) {
         return res.status(401).json({ error: "Invalid credentials" });
       }
-      const user = result.rows[0];
-      const isMatch = await bcrypt.compare(password, user.password);
+
+      const isMatch = await bcrypt.compare(password, user.rows[0].password);
       if (!isMatch) {
         return res.status(401).json({ error: "Invalid credentials" });
       }
-      const token = generateToken(user);
-      res.json({
-        token,
-        user: { id: user.id, email: user.email, username: user.username },
+
+      const token = jwt.sign(
+        {
+          id: user.rows[0].id,
+          username: user.rows[0].username,
+          email: user.rows[0].email,
+        },
+        secret,
+        { expiresIn: "30d" }
+      );
+
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      });
+
+      res.status(200).json({
+        message: "Login successful",
+        token: token,
       });
     } catch (err) {
       res.status(500).json({ error: "Internal server error" });
     }
   } else {
-    res.status(400).json({ error: "Invalid data" });
+    res.status(400).json({ error: "Invalid data!" });
   }
 }
 
