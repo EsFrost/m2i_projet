@@ -1,134 +1,128 @@
-const likesModel = require('../models/LikesModel')
-const sanitizeHtlm = require('sanitize-html')
-const validator = require('validator')
-const { v4: uuidv4 } = require('uuid')
+const likesModel = require("../models/LikesModel");
+const sanitizeHtml = require("sanitize-html");
+const validator = require("validator");
+const { v4: uuidv4 } = require("uuid");
 
 async function showLikes(req, res) {
-    let p_id = req.params.p_id
-    p_id = sanitizeHtlm(p_id)
-    if (validator.isUUID(p_id)) {
-        likesModel.countPhotoLikes(p_id)
-            .then(result => {
-                res.status(201).json(result.rows)
-            })
-            .catch(err => {
-                res.status(500).json(err)
-            })
+  let p_id = sanitizeHtml(req.params.p_id);
+  if (validator.isUUID(p_id)) {
+    try {
+      const result = await likesModel.countPhotoLikes(p_id);
+      res.status(200).json(result.rows);
+    } catch (err) {
+      res
+        .status(500)
+        .json({ error: "Internal server error", details: err.message });
     }
-    else {
-        res.status(400).json({ "error": "Invalid photo id!" })
-    }
+  } else {
+    res.status(400).json({ error: "Invalid photo id!" });
+  }
 }
 
 async function getUserLikes(req, res) {
-    let u_id = req.params.u_id
-    u_id = sanitizeHtlm(u_id)
-    if (validator.isUUID(u_id)) {
-        likesModel.getUserLikes(u_id)
-            .then(result => {
-                res.status(201).json(result.rows)
-            })
-            .catch(err => {
-                res.status(500).json(err)
-            })
+  let u_id = sanitizeHtml(req.params.u_id);
+  if (validator.isUUID(u_id)) {
+    if (u_id !== req.user.id) {
+      return res
+        .status(403)
+        .json({ error: "Not authorized to view these likes" });
     }
-    else {
-        res.status(400).json({ "error": "Invalid user id!" })
+    try {
+      const result = await likesModel.getUserLikes(u_id);
+      res.status(200).json(result.rows);
+    } catch (err) {
+      res
+        .status(500)
+        .json({ error: "Internal server error", details: err.message });
     }
+  } else {
+    res.status(400).json({ error: "Invalid user id!" });
+  }
 }
 
 async function getPhotoLikes(req, res) {
-    let p_id = req.params.p_id
-    p_id = sanitizeHtlm(p_id)
-    if (validator.isUUID(p_id)) {
-        likesModel.getPhotoLikes(p_id)
-            .then(result => {
-                res.status(201).json(result.rows)
-            })
-            .catch(err => {
-                res.status(500).json(err)
-            })
-    }
-    else {
-        res.status(400).json({ "error": "Invalid photo id!" })
-    }
-}
-
-/* Helper function */
-async function checkLikes(id_user, id_photo) {
+  let p_id = sanitizeHtml(req.params.p_id);
+  if (validator.isUUID(p_id)) {
     try {
-        const result = await likesModel.getAllLikes()
-        return result.rows.some(item => item.id_photo === id_photo && item.id_user === id_user)
+      const result = await likesModel.getPhotoLikes(p_id);
+      res.status(200).json(result.rows);
     } catch (err) {
-        throw err
+      res
+        .status(500)
+        .json({ error: "Internal server error", details: err.message });
     }
+  } else {
+    res.status(400).json({ error: "Invalid photo id!" });
+  }
 }
 
-/* If the user has already liked the photo, the request has to fail */
-async function addLike(req, res) {
-    let { id_user, id_photo } = req.body
-    id_user = sanitizeHtlm(id_user)
-    id_photo = sanitizeHtlm(id_photo)
-    const id = uuidv4()
+async function checkLikes(id_user, id_photo) {
+  try {
+    const result = await likesModel.getAllLikes();
+    return result.rows.some(
+      (item) => item.id_photo === id_photo && item.id_user === id_user
+    );
+  } catch (err) {
+    throw err;
+  }
+}
 
-    if (validator.isUUID(id) && validator.isUUID(id_user) && validator.isUUID(id_photo)) {
-        try {
-            const check = await checkLikes(id_user, id_photo)
-            if (check === true) {
-                res.status(201).json({ "warning": "You have already liked this photo!" })
-            }
-            else {
-                likesModel.likePhoto(id, id_user, id_photo)
-                    .then(() => {
-                        res.status(201).json({ "message": "Like added successfully!" })
-                    })
-                    .catch(err => {
-                        res.status(500).json({ "error": "Internal server error!", err })
-                    })
-                }
-            }
-        catch (err) {
-            res.status(500).json({ "error": "Internal server error!", err })
-        }
+async function addLike(req, res) {
+  let { id_photo } = req.body;
+  const id_user = req.user.id; // Get user id from the authenticated token
+  id_photo = sanitizeHtml(id_photo);
+  const id = uuidv4();
+
+  if (
+    validator.isUUID(id) &&
+    validator.isUUID(id_user) &&
+    validator.isUUID(id_photo)
+  ) {
+    try {
+      const check = await checkLikes(id_user, id_photo);
+      if (check === true) {
+        res.status(200).json({ warning: "You have already liked this photo!" });
+      } else {
+        await likesModel.likePhoto(id, id_user, id_photo);
+        res.status(201).json({ message: "Like added successfully!" });
+      }
+    } catch (err) {
+      res
+        .status(500)
+        .json({ error: "Internal server error!", details: err.message });
     }
-    else {
-        res.status(400).json({ "error": "Invalid data!" })
-    }
+  } else {
+    res.status(400).json({ error: "Invalid data!" });
+  }
 }
 
 async function deleteLike(req, res) {
-    let { id_user, id_photo } = req.params
-    id_user = sanitizeHtlm(id_user)
-    id_photo = sanitizeHtlm(id_photo)
-    if (validator.isUUID(id_user) && validator.isUUID(id_photo)) {
-        try {
-            const check = await checkLikes(id_user, id_photo)
-            if (check === true) {
-                likesModel.unlikePhoto(id_user, id_photo)
-                    .then(() => {
-                        res.status(201).json({ "message": "Photo unliked!" })
-                    })
-                    .catch(err => {
-                        res.status(500).json({ "error": "Internal server error!", err })
-                    })
-                }
-            else {
-                res.status(201).json({ "warning": "You have not liked this photo!" })
-            }
-        }
-        catch (err) {
-            res.status(500).json({ "error": "Internal server error!", err })
-        }
+  let { id_photo } = req.params;
+  const id_user = req.user.id; // Get user id from the authenticated token
+  id_photo = sanitizeHtml(id_photo);
+  if (validator.isUUID(id_user) && validator.isUUID(id_photo)) {
+    try {
+      const check = await checkLikes(id_user, id_photo);
+      if (check === true) {
+        await likesModel.unlikePhoto(id_user, id_photo);
+        res.status(200).json({ message: "Photo unliked!" });
+      } else {
+        res.status(200).json({ warning: "You have not liked this photo!" });
+      }
+    } catch (err) {
+      res
+        .status(500)
+        .json({ error: "Internal server error!", details: err.message });
     }
-    else {
-        res.status(400).json({ "error": "Invalid data!" })
-    }
+  } else {
+    res.status(400).json({ error: "Invalid data!" });
+  }
 }
 
-module.exports = { 
-    showLikes,
-    getUserLikes,
-    getPhotoLikes,
-    addLike,
-    deleteLike
-}
+module.exports = {
+  showLikes,
+  getUserLikes,
+  getPhotoLikes,
+  addLike,
+  deleteLike,
+};

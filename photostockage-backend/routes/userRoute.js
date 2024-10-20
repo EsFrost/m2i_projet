@@ -1,6 +1,7 @@
 const express = require("express");
 const userRouter = express.Router();
 const userController = require("../controllers/UserController");
+const authMiddleware = require("../middleware/authMiddleware");
 
 /* method: GET */
 userRouter.get("/users", userController.showUsers);
@@ -13,10 +14,10 @@ userRouter.post("/register", userController.registerUser);
 userRouter.post("/login", userController.loginUser);
 
 /* method: DELETE */
-userRouter.delete("/delete/:email", userController.delUser);
+userRouter.delete("/delete/:email", authMiddleware, userController.delUser);
 
 /* method: PUT */
-userRouter.put("/changepass", userController.changePass);
-userRouter.put("/changeuser/:id", userController.changeUser);
+userRouter.put("/changepass", authMiddleware, userController.changePass);
+userRouter.put("/changeuser/:id", authMiddleware, userController.changeUser);
 
 module.exports = userRouter;

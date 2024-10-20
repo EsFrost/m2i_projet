@@ -107,16 +107,13 @@ async function showUserByEmail(req, res) {
   }
 }
 
-function registerUser(req, res) {
+async function registerUser(req, res) {
   let { username, password, email, user_icon } = req.body;
   const id = uuidv4();
   username = sanitizeHtml(username);
   password = sanitizeHtml(password);
   email = sanitizeHtml(email);
   user_icon = sanitizeHtml(user_icon);
-
-  const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(password, salt);
 
   if (
     validator.isUUID(id) &&
@@ -128,80 +125,123 @@ function registerUser(req, res) {
       user_icon === null ||
       user_icon === undefined)
   ) {
-    userModel
-      .newUser(id, username, email, hash, user_icon)
-      .then((result) => {
-        const user = { id, email, username };
-        const token = generateToken(user);
-        res.status(201).json({
-          message: `User ${email} created successfully!`,
-          token,
-          user,
-        });
-      })
-      .catch((err) => {
-        if (err.code === "23505") {
-          res
-            .status(400)
-            .json({ message: `Email or username already exists!` });
-        } else if (err.code === "22P02") {
-          res.status(400).json({ message: `Invalid data!` });
-        } else {
-          res.status(500).json({ error: "Internal server error! " });
-        }
+    try {
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(password, salt);
+
+      await userModel.newUser(id, username, email, hash, user_icon);
+
+      const user = { id, email, username };
+      const token = generateToken(user);
+
+      res.status(201).json({
+        message: `User ${email} created successfully!`,
+        token,
+        user,
       });
+    } catch (err) {
+      if (err.code === "23505") {
+        res.status(400).json({ message: `Email or username already exists!` });
+      } else if (err.code === "22P02") {
+        res.status(400).json({ message: `Invalid data!` });
+      } else {
+        console.error(err);
+        res
+          .status(500)
+          .json({ error: "Internal server error", details: err.message });
+      }
+    }
   } else {
     res.status(400).json({ error: "Invalid data!" });
   }
 }
 
-function delUser(req, res) {
+async function delUser(req, res) {
   let email = req.params.email;
   email = sanitizeHtml(email);
 
   if (validator.isEmail(email)) {
+    if (email !== req.user.email) {
+      return res
+        .status(403)
+        .json({ error: "Not authorized to delete this user" });
+    }
     try {
-      userModel.deleteUser(email);
-      res.send({ message: `User ${email} deleted successfully!` });
+      await userModel.deleteUser(email);
+      res.clearCookie("token");
+      res.status(200).json({ message: `User ${email} deleted successfully!` });
     } catch (err) {
-      res.send(err);
+      res
+        .status(500)
+        .json({ error: "Internal server error", details: err.message });
     }
   } else {
-    res.send("Invalid data!");
+    res.status(400).json({ error: "Invalid email format" });
   }
 }
 
 // need to validate using jwt and compare hashed password / id / email / username
-function changePass(req, res) {
-  let { email, password } = req.body;
+async function changePass(req, res) {
+  let { email, currentPassword, newPassword } = req.body;
 
   email = sanitizeHtml(email);
-  password = sanitizeHtml(password);
+  currentPassword = sanitizeHtml(currentPassword);
+  newPassword = sanitizeHtml(newPassword);
 
-  const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(password, salt);
+  if (email !== req.user.email) {
+    return res
+      .status(403)
+      .json({ error: "Not authorized to change this user's password" });
+  }
 
-  if (validator.isEmail(email) && validator.isAlphanumeric(password)) {
-    userModel
-      .editPassword(hash, email)
-      .then(() => {
-        res.status(201).json({ message: `Password updated successfully!` });
-      })
-      .catch((err) => {
-        res.status(500).json({ error: "Internal server error! " });
-      });
-  } else {
-    res.status(400).json({ error: "Invalid data!" });
+  if (
+    !validator.isEmail(email) ||
+    !validator.isAlphanumeric(currentPassword) ||
+    !validator.isAlphanumeric(newPassword)
+  ) {
+    return res.status(400).json({ error: "Invalid data!" });
+  }
+
+  try {
+    const user = await userModel.getUserByEmail(email);
+    if (user.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(
+      currentPassword,
+      user.rows[0].password
+    );
+    if (!isMatch) {
+      return res.status(401).json({ error: "Current password is incorrect" });
+    }
+
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(newPassword, salt);
+
+    await userModel.editPassword(hash, email);
+    res.status(200).json({ message: "Password updated successfully!" });
+  } catch (err) {
+    console.error("Error in changePass:", err);
+    res
+      .status(500)
+      .json({ error: "Internal server error", details: err.message });
   }
 }
 
 // validation needed here also
-function changeUser(req, res) {
+async function changeUser(req, res) {
   let { username, user_icon } = req.body;
   let id = req.params.id;
 
   username = sanitizeHtml(username);
   user_icon = sanitizeHtml(user_icon);
+
+  if (id !== req.user.id) {
+    return res
+      .status(403)
+      .json({ error: "Not authorized to change this user's information" });
+  }
 
   if (
     validator.isUUID(id) &&
@@ -211,14 +251,16 @@ function changeUser(req, res) {
       user_icon === null ||
       user_icon === undefined)
   ) {
-    userModel
-      .editUser(username, user_icon, id)
-      .then(() => {
-        res.status(201).json({ message: `User updated successfully!` });
-      })
-      .catch((err) => {
-        res.status(500).json({ error: "Internal server error! " });
-      });
+    try {
+      await userModel.editUser(username, user_icon, id);
+      res.status(200).json({ message: "User updated successfully!" });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ error: "Internal server error", details: err.message });
+    }
+  } else {
+    res.status(400).json({ error: "Invalid data!" });
   }
 }
 

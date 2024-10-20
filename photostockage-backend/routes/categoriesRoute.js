@@ -1,18 +1,14 @@
-const express = require('express')
-const categoriesRouter = express.Router()
-const categoriesController = require('../controllers/CategoriesController')
+const express = require("express");
+const categoriesRouter = express.Router();
+const categoriesController = require("../controllers/CategoriesController");
+const verifyJwtToken = require("../middleware/authMiddleware");
 
 /* method GET */
-categoriesRouter.get('/', categoriesController.showCategories)
-categoriesRouter.get('/:id', categoriesController.showCategoryById)
-categoriesRouter.get('/:name', categoriesController.showCategoryByName)
+categoriesRouter.get("/", categoriesController.showCategories);
+categoriesRouter.get("/:id", categoriesController.showCategoryById);
+categoriesRouter.get("/:name", categoriesController.showCategoryByName);
 
 /* method POST */
-/* Untested functionality */
-categoriesRouter.post('/', categoriesController.createCategory)
+categoriesRouter.post("/", verifyJwtToken, categoriesController.createCategory);
 
-/* method PUT */
-
-/* method DELETE */
-
-module.exports = categoriesRouter
+module.exports = categoriesRouter;
