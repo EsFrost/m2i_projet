@@ -70,6 +70,9 @@ async function createCategory(req, res) {
   }
 }
 
+/* Edit category, admin only */
+async function editCategory(req, res) {}
+
 module.exports = {
   showCategories,
   createCategory,
