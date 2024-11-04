@@ -1,14 +1,25 @@
 const express = require("express");
 const categoriesRouter = express.Router();
 const categoriesController = require("../controllers/CategoriesController");
-const verifyJwtToken = require("../middleware/authMiddleware");
+const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 
-/* method GET */
+/* Public routes */
 categoriesRouter.get("/", categoriesController.showCategories);
 categoriesRouter.get("/:id", categoriesController.showCategoryById);
-categoriesRouter.get("/:name", categoriesController.showCategoryByName);
+categoriesRouter.get("/name/:name", categoriesController.showCategoryByName);
 
-/* method POST */
-categoriesRouter.post("/", verifyJwtToken, categoriesController.createCategory);
+/* Admin only routes */
+categoriesRouter.post(
+  "/",
+  authMiddleware,
+  isAdmin,
+  categoriesController.createCategory
+);
+categoriesRouter.put(
+  "/edit",
+  authMiddleware,
+  isAdmin,
+  categoriesController.editCategory
+);
 
 module.exports = categoriesRouter;

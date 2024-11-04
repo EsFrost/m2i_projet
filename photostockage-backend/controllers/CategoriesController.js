@@ -1,9 +1,7 @@
 const { v4: uuidv4 } = require("uuid");
-const { createCategory } = require("../models/CategoriesModel");
+const categoryModel = require("../models/CategoriesModel");
 const sanitizeHtml = require("sanitize-html");
 const validator = require("validator");
-
-const categoryModel = require("../models/CategoriesModel");
 
 async function showCategories(req, res) {
   try {
@@ -71,11 +69,40 @@ async function createCategory(req, res) {
 }
 
 /* Edit category, admin only */
-async function editCategory(req, res) {}
+async function editCategory(req, res) {
+  let { cid, name, description } = req.body;
+
+  const sanitizedName = sanitizeHtml(name);
+  const sanitizedDescription = sanitizeHtml(description);
+
+  if (
+    validator.isUUID(cid) &&
+    name !== null &&
+    name !== undefined &&
+    description !== null &&
+    description !== undefined
+  ) {
+    try {
+      await categoryModel.editCategory(
+        cid,
+        sanitizedName,
+        sanitizedDescription
+      );
+      res.status(200).json({ message: "Category edited successfully" });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ message: "Failed to edit category", error: err.message });
+    }
+  } else {
+    res.status(400).json({ message: "Invalid input data" });
+  }
+}
 
 module.exports = {
   showCategories,
   createCategory,
   showCategoryById,
   showCategoryByName,
+  editCategory,
 };

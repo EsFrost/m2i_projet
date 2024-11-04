@@ -23,11 +23,17 @@ function createCategory(id, name, description) {
 }
 
 /* Edit category, admin only */
-function editCategory() {}
+function editCategory(id, name, description) {
+  return pool.query(
+    `UPDATE categories SET name = $1, description = $2 WHERE id = $3`,
+    [id, name, description]
+  );
+}
 
 module.exports = {
   getCategories,
   createCategory,
   getCategoryById,
   getCategoryByName,
+  editCategory,
 };

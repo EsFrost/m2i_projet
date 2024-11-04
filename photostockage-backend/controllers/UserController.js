@@ -29,6 +29,7 @@ async function loginUser(req, res) {
           id: user.rows[0].id,
           username: user.rows[0].username,
           email: user.rows[0].email,
+          access_level: user.rows[0].access_level, // Add access_level to token payload
         },
         secret,
         { expiresIn: "30d" }
@@ -38,6 +39,7 @@ async function loginUser(req, res) {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+        sameSite: "strict", // Added security measure
       });
 
       res.status(200).json({
