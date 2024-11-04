@@ -1,15 +1,24 @@
-const express = require('express')
-const commentsRouter = express.Router()
-const commentsController = require('../controllers/CommentsController')
+const express = require("express");
+const commentsRouter = express.Router();
+const commentsController = require("../controllers/CommentsController");
+const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 
-/* method: GET */
-commentsRouter.get('/photo/:p_id', commentsController.showActivePhotoComments)
-commentsRouter.get('/c_photo/:p_id', commentsController.showAllPhotoComments)
+/* Public routes */
+commentsRouter.get("/photo/:p_id", commentsController.showActivePhotoComments);
+commentsRouter.get("/c_photo/:p_id", commentsController.showAllPhotoComments);
 
-/* method: POST */
+/* Protected routes - require authentication */
+// Add new comment
+commentsRouter.post("/add", authMiddleware, commentsController.addComment);
 
-/* method: DELETE */
+// Edit comment
+commentsRouter.put("/edit", authMiddleware, commentsController.editComment);
 
-/* method: PUT */
+// Delete comment (accessible by comment owner or admin)
+commentsRouter.delete(
+  "/delete/:id",
+  authMiddleware,
+  commentsController.deleteComment
+);
 
-module.exports = commentsRouter
+module.exports = commentsRouter;
