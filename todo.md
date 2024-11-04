@@ -4,6 +4,7 @@
 - Do a review of the whole codebase
 - Create the database again and test all routes
 - Write the documentation
+- Continue from downloads
 
 ---
 
