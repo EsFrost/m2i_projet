@@ -17,7 +17,7 @@ function getCategoryByName(name) {
 /* Untested functionality */
 function createCategory(id, name, description) {
   return pool.query(
-    `INSERT INTO categories (id, name, description) VALUES ($1, $2, $3)`,
+    `INSERT INTO categories (id, name, description) VALUES ($1, $2, $3) RETURNING (id, name)`,
     [id, name, description]
   );
 }
@@ -25,7 +25,7 @@ function createCategory(id, name, description) {
 /* Edit category, admin only */
 function editCategory(id, name, description) {
   return pool.query(
-    `UPDATE categories SET name = $1, description = $2 WHERE id = $3`,
+    `UPDATE categories SET name = $1, description = $2 WHERE id = $3 RETURNING (id, name)`,
     [id, name, description]
   );
 }

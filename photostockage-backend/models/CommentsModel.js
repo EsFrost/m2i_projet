@@ -13,21 +13,21 @@ function getAllPhotoComments(p_id) {
 
 function addComment(id, user_id, photo_id, content) {
   return pool.query(
-    `INSERT INTO comments (id, id_user, id_photo, content) VALUES ($1, $2, $3, $4) RETURNING *`,
+    `INSERT INTO comments (id, id_user, id_photo, content) VALUES ($1, $2, $3, $4) RETURNING (id, id_photo)`,
     [id, user_id, photo_id, content]
   );
 }
 
 function deleteComment(comment_id, user_id) {
   return pool.query(
-    `DELETE FROM comments WHERE id = $1 AND id_user = $2 RETURNING *`,
+    `DELETE FROM comments WHERE id = $1 AND id_user = $2 RETURNING (comment_id)`,
     [comment_id, user_id]
   );
 }
 
 function edtiComment(comment_id, user_id, content) {
   return pool.query(
-    `UPDATE comments SET content = $1 WHERE id = $2 AND id_user = $3 RETURNING *`,
+    `UPDATE comments SET content = $1 WHERE id = $2 AND id_user = $3 RETURNING (commnet_id)`,
     [content, comment_id, user_id]
   );
 }

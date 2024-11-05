@@ -5,6 +5,7 @@
 - Create the database again and test all routes
 - Write the documentation
 - Continue from downloads
+- Add RETURNING (valuen...) || \* where needed
 
 ---
 
