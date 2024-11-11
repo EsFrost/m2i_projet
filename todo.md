@@ -7,6 +7,16 @@
 - Continue from downloads
 - Add RETURNING (valuen...) || \* where needed
 
+## Categories controller
+
+- createCategory should be admin only
+
+## Downloads controller
+
+- checkDownloads and showUserDownloads need to be checked, they seem like duplicates
+
+## Check if all controllers and functions are validated
+
 ---
 
-### **_Updated at :_** 10-11-24
+### **_Updated at :_** 11-11-24
