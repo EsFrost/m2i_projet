@@ -1,7 +1,7 @@
 const express = require("express");
 const downloadsRouter = express.Router();
 const downloadsController = require("../controllers/DownloadsController");
-const authMiddleware = require("../middleware/authMiddleware");
+const { authMiddleware } = require("../middleware/authMiddleware");
 
 /* method: GET */
 downloadsRouter.get(

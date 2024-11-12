@@ -7,6 +7,20 @@ const sanitizeHtml = require("sanitize-html");
 const validator = require("validator");
 const { v4: uuidv4 } = require("uuid");
 
+// Token generation
+function generateToken(user) {
+  return jwt.sign(
+    {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      access_level: user.access_level,
+    },
+    secret,
+    { expiresIn: "30d" }
+  );
+}
+
 async function loginUser(req, res) {
   let { email, password } = req.body;
   email = sanitizeHtml(email);
@@ -266,6 +280,18 @@ async function changeUser(req, res) {
   }
 }
 
+async function logoutUser(req, res) {
+  try {
+    // Clear the JWT cookie
+    res.clearCookie("token");
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ error: "Internal server error", details: err.message });
+  }
+}
+
 module.exports = {
   showUsers,
   showUser,
@@ -276,4 +302,5 @@ module.exports = {
   changePass,
   changeUser,
   loginUser,
+  logoutUser,
 };

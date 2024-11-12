@@ -1,7 +1,7 @@
 const express = require("express");
 const likesRouter = express.Router();
 const likesController = require("../controllers/LikesController");
-const authMiddleware = require("../middleware/authMiddleware");
+const { authMiddleware } = require("../middleware/authMiddleware");
 
 /* method: GET */
 likesRouter.get("/likes/:p_id", likesController.showLikes);
