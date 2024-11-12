@@ -45,6 +45,11 @@ async function showCategoryByName(req, res) {
 }
 
 async function createCategory(req, res) {
+  // Check if user has admin access (belt and suspenders, since middleware also checks)
+  if (!req.user || !req.user.access_level) {
+    return res.status(403).json({ error: "Admin access required" });
+  }
+
   let { name, description } = req.body;
   const id = uuidv4();
   let sanitizedName = sanitizeHtml(name);
@@ -70,6 +75,11 @@ async function createCategory(req, res) {
 
 /* Edit category, admin only */
 async function editCategory(req, res) {
+  // Check if user has admin access (belt and suspenders, since middleware also checks)
+  if (!req.user || !req.user.access_level) {
+    return res.status(403).json({ error: "Admin access required" });
+  }
+
   let { cid, name, description } = req.body;
 
   const sanitizedName = sanitizeHtml(name);

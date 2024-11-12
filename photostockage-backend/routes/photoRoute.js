@@ -1,7 +1,7 @@
 const express = require("express");
 const photoRouter = express.Router();
 const photoController = require("../controllers/PhotoController");
-const verifyJwtToken = require("../middleware/authMiddleware");
+const authMiddleware = require("../middleware/authMiddleware");
 
 /* method: GET */
 photoRouter.get("/photos/admin", photoController.showPhotos);
@@ -11,12 +11,12 @@ photoRouter.get("/photos/user/:id", photoController.showUserPhotos);
 photoRouter.get("/photo/user/:p_id/:u_id", photoController.showUserPhotoById);
 
 /* method: POST */
-photoRouter.post("/add_photo", verifyJwtToken, photoController.newPhoto);
+photoRouter.post("/add_photo", authMiddleware, photoController.newPhoto);
 
 /* method: DELETE */
-photoRouter.delete("/delete/:id", verifyJwtToken, photoController.deletePhoto);
+photoRouter.delete("/delete/:id", authMiddleware, photoController.deletePhoto);
 
 /* method: PUT */
-photoRouter.put("/edit/:id", verifyJwtToken, photoController.editPhoto);
+photoRouter.put("/edit/:id", authMiddleware, photoController.editPhoto);
 
 module.exports = photoRouter;
