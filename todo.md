@@ -1,10 +1,7 @@
 # Backend
 
-- Create the database again and test all routes
+- Test all routes
 - Write the documentation
-- Add RETURNING (valuen...) || \* where needed
-
-## Check if all controllers and functions are validated
 
 ---
 

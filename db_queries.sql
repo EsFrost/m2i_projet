@@ -11,7 +11,7 @@ CREATE TABLE Users (
     id TEXT PRIMARY KEY,
     username VARCHAR(25) UNIQUE NOT NULL,
     email VARCHAR(30) UNIQUE NOT NULL,
-    password VARCHAR(20) NOT NULL,
+    password TEXT NOT NULL,  -- Changed to TEXT for bcrypt hashes
     access_level BOOLEAN DEFAULT false,
     user_icon TEXT
 );
@@ -47,7 +47,7 @@ CREATE TABLE Downloads (
 
 CREATE TABLE Comments (
     id TEXT PRIMARY KEY,
-    comment TEXT NOT NULL,
+    content TEXT NOT NULL,
     id_photo TEXT,
     id_user TEXT,
     status BOOLEAN DEFAULT false,
@@ -61,40 +61,42 @@ CREATE TABLE Categories (
     name VARCHAR(30) NOT NULL,
     description TEXT NOT NULL
 );
+
 CREATE TABLE Photos_Categories (
     id TEXT PRIMARY KEY,
     id_photo TEXT,
     id_category TEXT,
     FOREIGN KEY (id_photo) REFERENCES Photos(id),
     FOREIGN KEY (id_category) REFERENCES Categories(id)
+    ON DELETE CASCADE  -- Added CASCADE
 );
 
---- Dummy Values ---
 --- Insert data into Users table ---
+-- All passwords are hashed versions of 'password123' using bcrypt
 INSERT INTO Users (id, username, email, password, access_level, user_icon) VALUES
-('550e8400-e29b-41d4-a716-446655440000', 'user1', 'user1@example.com', 'pass1', true, ''),
-('550e8400-e29b-41d4-a716-446655440001', 'user2', 'user2@example.com', 'pass2', false, ''),
-('550e8400-e29b-41d4-a716-446655440002', 'user3', 'user3@example.com', 'pass3', false, ''),
-('550e8400-e29b-41d4-a716-446655440003', 'user4', 'user4@example.com', 'pass4', true, ''),
-('550e8400-e29b-41d4-a716-446655440004', 'user5', 'user5@example.com', 'pass5', false, ''),
-('550e8400-e29b-41d4-a716-446655440005', 'user6', 'user6@example.com', 'pass6', false, ''),
-('550e8400-e29b-41d4-a716-446655440006', 'user7', 'user7@example.com', 'pass7', true, ''),
-('550e8400-e29b-41d4-a716-446655440007', 'user8', 'user8@example.com', 'pass8', false, ''),
-('550e8400-e29b-41d4-a716-446655440008', 'user9', 'user9@example.com', 'pass9', true, ''),
-('550e8400-e29b-41d4-a716-446655440009', 'user10', 'user10@example.com', 'pass10', false, '');
+('550e8400-e29b-41d4-a716-446655440000', 'user1', 'user1@example.com', '$2a$10$6gvxYYVxZJ2uF4cdhkFZ.eZ896YU9Z0z6LrJ8TdI7YqJ0TwzR/HUi', true, ''),
+('550e8400-e29b-41d4-a716-446655440001', 'user2', 'user2@example.com', '$2a$10$6gvxYYVxZJ2uF4cdhkFZ.eZ896YU9Z0z6LrJ8TdI7YqJ0TwzR/HUi', false, ''),
+('550e8400-e29b-41d4-a716-446655440002', 'user3', 'user3@example.com', '$2a$10$6gvxYYVxZJ2uF4cdhkFZ.eZ896YU9Z0z6LrJ8TdI7YqJ0TwzR/HUi', false, ''),
+('550e8400-e29b-41d4-a716-446655440003', 'user4', 'user4@example.com', '$2a$10$6gvxYYVxZJ2uF4cdhkFZ.eZ896YU9Z0z6LrJ8TdI7YqJ0TwzR/HUi', true, ''),
+('550e8400-e29b-41d4-a716-446655440004', 'user5', 'user5@example.com', '$2a$10$6gvxYYVxZJ2uF4cdhkFZ.eZ896YU9Z0z6LrJ8TdI7YqJ0TwzR/HUi', false, ''),
+('550e8400-e29b-41d4-a716-446655440005', 'user6', 'user6@example.com', '$2a$10$6gvxYYVxZJ2uF4cdhkFZ.eZ896YU9Z0z6LrJ8TdI7YqJ0TwzR/HUi', false, ''),
+('550e8400-e29b-41d4-a716-446655440006', 'user7', 'user7@example.com', '$2a$10$6gvxYYVxZJ2uF4cdhkFZ.eZ896YU9Z0z6LrJ8TdI7YqJ0TwzR/HUi', true, ''),
+('550e8400-e29b-41d4-a716-446655440007', 'user8', 'user8@example.com', '$2a$10$6gvxYYVxZJ2uF4cdhkFZ.eZ896YU9Z0z6LrJ8TdI7YqJ0TwzR/HUi', false, ''),
+('550e8400-e29b-41d4-a716-446655440008', 'user9', 'user9@example.com', '$2a$10$6gvxYYVxZJ2uF4cdhkFZ.eZ896YU9Z0z6LrJ8TdI7YqJ0TwzR/HUi', true, ''),
+('550e8400-e29b-41d4-a716-446655440009', 'user10', 'user10@example.com', '$2a$10$6gvxYYVxZJ2uF4cdhkFZ.eZ896YU9Z0z6LrJ8TdI7YqJ0TwzR/HUi', false, '');
 
 --- Insert data into Photos table ---
 INSERT INTO Photos (id, user_id, name, description, status, path) VALUES
-('660e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440000', 'Photo1', 'Description1', true, 'a'),
-('660e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440001', 'Photo2', 'Description2', false, 'b'),
-('660e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440002', 'Photo3', 'Description3', true, 'c'),
-('660e8400-e29b-41d4-a716-446655440003', '550e8400-e29b-41d4-a716-446655440003', 'Photo4', 'Description4', false, 'd'),
-('660e8400-e29b-41d4-a716-446655440004', '550e8400-e29b-41d4-a716-446655440004', 'Photo5', 'Description5', true, 'e'),
-('660e8400-e29b-41d4-a716-446655440005', '550e8400-e29b-41d4-a716-446655440005', 'Photo6', 'Description6', false, 'f'),
-('660e8400-e29b-41d4-a716-446655440006', '550e8400-e29b-41d4-a716-446655440006', 'Photo7', 'Description7', true, 'g'),
-('660e8400-e29b-41d4-a716-446655440007', '550e8400-e29b-41d4-a716-446655440007', 'Photo8', 'Description8', false, 'h'),
-('660e8400-e29b-41d4-a716-446655440008', '550e8400-e29b-41d4-a716-446655440008', 'Photo9', 'Description9', true, 'i'),
-('660e8400-e29b-41d4-a716-446655440009', '550e8400-e29b-41d4-a716-446655440009', 'Photo10', 'Description10', false, 'j');
+('660e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440000', 'Photo1', 'Description1', true, 'path/to/photo1.jpg'),
+('660e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440001', 'Photo2', 'Description2', false, 'path/to/photo2.jpg'),
+('660e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440002', 'Photo3', 'Description3', true, 'path/to/photo3.jpg'),
+('660e8400-e29b-41d4-a716-446655440003', '550e8400-e29b-41d4-a716-446655440003', 'Photo4', 'Description4', false, 'path/to/photo4.jpg'),
+('660e8400-e29b-41d4-a716-446655440004', '550e8400-e29b-41d4-a716-446655440004', 'Photo5', 'Description5', true, 'path/to/photo5.jpg'),
+('660e8400-e29b-41d4-a716-446655440005', '550e8400-e29b-41d4-a716-446655440005', 'Photo6', 'Description6', false, 'path/to/photo6.jpg'),
+('660e8400-e29b-41d4-a716-446655440006', '550e8400-e29b-41d4-a716-446655440006', 'Photo7', 'Description7', true, 'path/to/photo7.jpg'),
+('660e8400-e29b-41d4-a716-446655440007', '550e8400-e29b-41d4-a716-446655440007', 'Photo8', 'Description8', false, 'path/to/photo8.jpg'),
+('660e8400-e29b-41d4-a716-446655440008', '550e8400-e29b-41d4-a716-446655440008', 'Photo9', 'Description9', true, 'path/to/photo9.jpg'),
+('660e8400-e29b-41d4-a716-446655440009', '550e8400-e29b-41d4-a716-446655440009', 'Photo10', 'Description10', false, 'path/to/photo10.jpg');
 
 --- Insert data into Likes table ---
 INSERT INTO Likes (id, id_photo, id_user) VALUES
@@ -123,7 +125,7 @@ INSERT INTO Downloads (id, id_photo, id_user) VALUES
 ('880e8400-e29b-41d4-a716-446655440009', '660e8400-e29b-41d4-a716-446655440009', '550e8400-e29b-41d4-a716-446655440001');
 
 --- Insert data into Comments table ---
-INSERT INTO Comments (id, comment, id_photo, id_user, status) VALUES
+INSERT INTO Comments (id, content, id_photo, id_user, status) VALUES
 ('990e8400-e29b-41d4-a716-446655440000', 'Great photo!', '660e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440001', true),
 ('990e8400-e29b-41d4-a716-446655440001', 'Amazing shot!', '660e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440002', false),
 ('990e8400-e29b-41d4-a716-446655440002', 'Nice angle.', '660e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440003', true),
@@ -135,18 +137,18 @@ INSERT INTO Comments (id, comment, id_photo, id_user, status) VALUES
 ('990e8400-e29b-41d4-a716-446655440008', 'Fantastic!', '660e8400-e29b-41d4-a716-446655440008', '550e8400-e29b-41d4-a716-446655440009', true),
 ('990e8400-e29b-41d4-a716-446655440009', 'Love this!', '660e8400-e29b-41d4-a716-446655440009', '550e8400-e29b-41d4-a716-446655440000', false);
 
---- Insert data into Categories table ---
+--- Insert data into Categories table (continued) ---
 INSERT INTO Categories (id, name, description) VALUES
-('aa0e8400-e29b-41d4-a716-446655440000', 'Nature', 'Photos of nature'),
-('aa0e8400-e29b-41d4-a716-446655440001', 'Animals', 'Photos of animals'),
-('aa0e8400-e29b-41d4-a716-446655440002', 'Urban', 'Photos of urban landscapes'),
-('aa0e8400-e29b-41d4-a716-446655440003', 'People', 'Photos of people'),
-('aa0e8400-e29b-41d4-a716-446655440004', 'Sports', 'Photos of sports'),
-('aa0e8400-e29b-41d4-a716-446655440005', 'Travel', 'Photos of travel destinations'),
-('aa0e8400-e29b-41d4-a716-446655440006', 'Food', 'Photos of food'),
-('aa0e8400-e29b-41d4-a716-446655440007', 'Architecture', 'Photos of architecture'),
-('aa0e8400-e29b-41d4-a716-446655440008', 'Art', 'Photos of art'),
-('aa0e8400-e29b-41d4-a716-446655440009', 'Fashion', 'Photos of fashion');
+('aa0e8400-e29b-41d4-a716-446655440000', 'Nature', 'Photos of nature and landscapes'),
+('aa0e8400-e29b-41d4-a716-446655440001', 'Animals', 'Wildlife and pet photography'),
+('aa0e8400-e29b-41d4-a716-446655440002', 'Urban', 'City life and street photography'),
+('aa0e8400-e29b-41d4-a716-446655440003', 'People', 'Portraits and candid people photography'),
+('aa0e8400-e29b-41d4-a716-446655440004', 'Sports', 'Athletic events and sports activities'),
+('aa0e8400-e29b-41d4-a716-446655440005', 'Travel', 'Travel destinations and experiences'),
+('aa0e8400-e29b-41d4-a716-446655440006', 'Food', 'Culinary and food photography'),
+('aa0e8400-e29b-41d4-a716-446655440007', 'Architecture', 'Buildings and architectural details'),
+('aa0e8400-e29b-41d4-a716-446655440008', 'Art', 'Artistic and abstract photography'),
+('aa0e8400-e29b-41d4-a716-446655440009', 'Fashion', 'Fashion and style photography');
 
 --- Insert data into Photos_Categories table ---
 INSERT INTO Photos_Categories (id, id_photo, id_category) VALUES
