@@ -30,10 +30,16 @@ function editCategory(id, name, description) {
   );
 }
 
+/* Delete category, admin only */
+function deleteCategory(id) {
+  return pool.query("DELETE FROM categories WHERE id = $1 RETURNING id", [id]);
+}
+
 module.exports = {
   getCategories,
   createCategory,
   getCategoryById,
   getCategoryByName,
   editCategory,
+  deleteCategory,
 };

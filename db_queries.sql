@@ -71,6 +71,9 @@ CREATE TABLE Photos_Categories (
     ON DELETE CASCADE  -- Added CASCADE
 );
 
+--- Edit character limit constrain on name column in Categories table ---
+ALTER TABLE Categories ALTER COLUMN name TYPE VARCHAR(100);
+
 --- Insert data into Users table ---
 -- All passwords are hashed versions of 'password123' using bcrypt
 INSERT INTO Users (id, username, email, password, access_level, user_icon) VALUES

@@ -40,19 +40,16 @@ async function showAllPhotoComments(req, res) {
 }
 
 async function addComment(req, res) {
-  let { photo_id, content } = req.body;
-  const user_id = req.user.id; // From auth middleware
+  const photo_id = sanitizeHtml(req.params.photo_id);
+  const { content } = req.body;
+  const user_id = req.user.id;
   const id = uuidv4();
-
-  photo_id = sanitizeHtml(photo_id);
-  content = sanitizeHtml(content);
 
   if (!validator.isUUID(photo_id) || !content || content.trim() === "") {
     return res.status(400).json({ error: "Invalid input data" });
   }
 
   try {
-    // Check if photo exists and is active
     const photoStatus = await commentsModel.getPhotoStatus(photo_id);
 
     if (photoStatus.rows.length === 0) {
@@ -83,18 +80,15 @@ async function addComment(req, res) {
 }
 
 async function editComment(req, res) {
-  let { comment_id, content } = req.body;
+  const comment_id = sanitizeHtml(req.params.comment_id);
+  const { content } = req.body;
   const user_id = req.user.id;
-
-  comment_id = sanitizeHtml(comment_id);
-  content = sanitizeHtml(content);
 
   if (!validator.isUUID(comment_id) || !content || content.trim() === "") {
     return res.status(400).json({ error: "Invalid input data" });
   }
 
   try {
-    // Check if comment exists and get its details
     const commentResult = await commentsModel.getCommentDetails(comment_id);
 
     if (commentResult.rows.length === 0) {
@@ -109,7 +103,6 @@ async function editComment(req, res) {
         .json({ error: "Not authorized to edit this comment" });
     }
 
-    // Check if photo is still active
     const photoStatus = await commentsModel.getPhotoStatus(comment.id_photo);
     if (!photoStatus.rows[0].status) {
       return res

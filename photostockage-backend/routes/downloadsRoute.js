@@ -12,7 +12,7 @@ downloadsRouter.get(
 
 /* method: POST */
 downloadsRouter.post(
-  "/download",
+  "/download/:id_photo",
   authMiddleware,
   downloadsController.addDownload
 );

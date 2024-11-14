@@ -17,7 +17,7 @@ function getUserLikes(u_id) {
 function getPhotoLikes(p_id) {
   return pool.query(
     `
-        SELECT * FROM likes l
+        SELECT u.id, u.username, u.user_icon, l.id, l.id_photo FROM likes l
         JOIN users u ON l.id_user = u.id
         WHERE l.id_photo = $1`,
     [p_id]

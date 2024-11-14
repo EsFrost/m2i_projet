@@ -20,14 +20,14 @@ function addComment(id, user_id, photo_id, content) {
 
 function deleteComment(comment_id, user_id) {
   return pool.query(
-    `DELETE FROM comments WHERE id = $1 AND id_user = $2 RETURNING (comment_id)`,
+    `DELETE FROM comments WHERE id = $1 AND id_user = $2 RETURNING (id)`,
     [comment_id, user_id]
   );
 }
 
 function edtiComment(comment_id, user_id, content) {
   return pool.query(
-    `UPDATE comments SET content = $1 WHERE id = $2 AND id_user = $3 RETURNING (commnet_id)`,
+    `UPDATE comments SET content = $1 WHERE id = $2 AND id_user = $3 RETURNING (id)`,
     [content, comment_id, user_id]
   );
 }

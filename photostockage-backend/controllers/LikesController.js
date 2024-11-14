@@ -68,9 +68,8 @@ async function checkLikes(id_user, id_photo) {
 }
 
 async function addLike(req, res) {
-  let { id_photo } = req.body;
-  const id_user = req.user.id; // Get user id from the authenticated token
-  id_photo = sanitizeHtml(id_photo);
+  const id_photo = sanitizeHtml(req.params.id_photo);
+  const id_user = req.user.id;
   const id = uuidv4();
 
   if (

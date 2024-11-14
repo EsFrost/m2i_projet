@@ -9,7 +9,7 @@ likesRouter.get("/user/:u_id", authMiddleware, likesController.getUserLikes);
 likesRouter.get("/photo/:p_id", likesController.getPhotoLikes);
 
 /* method: POST */
-likesRouter.post("/like", authMiddleware, likesController.addLike);
+likesRouter.post("/like/:id_photo", authMiddleware, likesController.addLike);
 
 /* method: DELETE */
 likesRouter.delete(

@@ -16,8 +16,8 @@ async function checkDownloads(id_user, id_photo) {
 }
 
 async function addDownload(req, res) {
-  let { id_photo } = req.body;
-  const id_user = req.user.id; // Get user id from the authenticated token
+  let id_photo = req.params.id_photo;
+  const id_user = req.user.id;
   id_photo = sanitizeHtml(id_photo);
   const id = uuidv4();
 

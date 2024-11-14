@@ -16,10 +16,16 @@ categoriesRouter.post(
   categoriesController.createCategory
 );
 categoriesRouter.put(
-  "/edit",
+  "/edit/:id",
   authMiddleware,
   isAdmin,
   categoriesController.editCategory
+);
+categoriesRouter.delete(
+  "/delete/:id",
+  authMiddleware,
+  isAdmin,
+  categoriesController.deleteCategory
 );
 
 module.exports = categoriesRouter;

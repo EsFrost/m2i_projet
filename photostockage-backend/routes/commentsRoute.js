@@ -9,10 +9,18 @@ commentsRouter.get("/c_photo/:p_id", commentsController.showAllPhotoComments);
 
 /* Protected routes - require authentication */
 // Add new comment
-commentsRouter.post("/add", authMiddleware, commentsController.addComment);
+commentsRouter.post(
+  "/add/:photo_id",
+  authMiddleware,
+  commentsController.addComment
+);
 
 // Edit comment
-commentsRouter.put("/edit", authMiddleware, commentsController.editComment);
+commentsRouter.put(
+  "/edit/:comment_id",
+  authMiddleware,
+  commentsController.editComment
+);
 
 // Delete comment (accessible by comment owner or admin)
 commentsRouter.delete(

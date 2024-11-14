@@ -32,7 +32,7 @@ async function showCategoryById(req, res) {
 
 async function showCategoryByName(req, res) {
   const name = sanitizeHtml(req.params.name);
-  if (validator.isString(name)) {
+  if (name && typeof name === "string") {
     try {
       const result = await categoryModel.getCategoryByName(name);
       res.status(200).json({ result: result.rows });
@@ -41,6 +41,8 @@ async function showCategoryByName(req, res) {
         .status(500)
         .json({ message: "Failed to get category", error: err.message });
     }
+  } else {
+    res.status(400).json({ message: "Invalid name format" });
   }
 }
 
@@ -75,29 +77,21 @@ async function createCategory(req, res) {
 
 /* Edit category, admin only */
 async function editCategory(req, res) {
-  // Check if user has admin access (belt and suspenders, since middleware also checks)
-  if (!req.user || !req.user.access_level) {
-    return res.status(403).json({ error: "Admin access required" });
-  }
+  const id = sanitizeHtml(req.params.id);
+  let { name, description } = req.body;
 
-  let { cid, name, description } = req.body;
-
-  const sanitizedName = sanitizeHtml(name);
-  const sanitizedDescription = sanitizeHtml(description);
+  name = sanitizeHtml(name);
+  description = sanitizeHtml(description);
 
   if (
-    validator.isUUID(cid) &&
-    name !== null &&
-    name !== undefined &&
-    description !== null &&
-    description !== undefined
+    validator.isUUID(id) &&
+    name &&
+    name.trim() !== "" &&
+    description &&
+    description.trim() !== ""
   ) {
     try {
-      await categoryModel.editCategory(
-        cid,
-        sanitizedName,
-        sanitizedDescription
-      );
+      await categoryModel.editCategory(id, name, description);
       res.status(200).json({ message: "Category edited successfully" });
     } catch (err) {
       res
@@ -109,10 +103,28 @@ async function editCategory(req, res) {
   }
 }
 
+async function deleteCategory(req, res) {
+  const id = sanitizeHtml(req.params.id);
+
+  if (validator.isUUID(id)) {
+    try {
+      await categoryModel.deleteCategory(id);
+      res.status(200).json({ message: "Category deleted successfully" });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ message: "Failed to delete category", error: err.message });
+    }
+  } else {
+    res.status(400).json({ message: "Invalid category ID" });
+  }
+}
+
 module.exports = {
   showCategories,
   createCategory,
   showCategoryById,
   showCategoryByName,
   editCategory,
+  deleteCategory,
 };
