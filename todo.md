@@ -1,6 +1,5 @@
 # Backend
 
-- Test all routes
 - Write the documentation
 
 ---
