@@ -4,4 +4,11 @@
 
 ---
 
-### **_Updated at :_** 12-11-24
+# Frontend
+
+- Fix tailwind!
+- Fix footer on mobile
+
+---
+
+### **_Updated at :_** 15-11-24

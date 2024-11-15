@@ -1,50 +1,60 @@
-import React from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import logoFull from '../../../public/logo_full.png'
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import logoFull from "../../../public/logo_full.png";
 
 export const Header = () => {
-    const logo = '@/src/app/media/logo_full.png'
   return (
-    <header className='text-gray-600 body-font'>
-        <div className='container mx-auto flex flex-wrap p-5 flex-row items-center justify-between mdim:flex-col'>
-            <Link className='flex order-none title-font font-medium items-center text-gray-900 justify-center' href='/'>
-                <Image src={logoFull} width={0} height={0} sizes='100vw' alt='Site logo' className='max-w-[5rem] h-full' />
-                <span className="text-xl mdim:hidden">photoStockage</span>
-            </Link>
-        
-            <nav className='flex flex-wrap items-center text-base mdim:mt-3'>
-                <Link className='mr-5 hover:text-gray-900 bg-left-bottom bg-gradient-to-r from-[#4f46e5] to-[#d4d2f4] bg-[length:0%_2px] bg-no-repeat hover:bg-[length:100%_2px] transition-all duration-500 ease-out' href='/'>Home</Link>
-                <Link className='mr-5 hover:text-gray-900 bg-left-bottom bg-gradient-to-r from-[#4f46e5] to-[#d4d2f4] bg-[length:0%_2px] bg-no-repeat hover:bg-[length:100%_2px] transition-all duration-500 ease-out' href='/about'>About</Link>
-                <Link className='mr-5 hover:text-gray-900 bg-left-bottom bg-gradient-to-r from-[#4f46e5] to-[#d4d2f4] bg-[length:0%_2px] bg-no-repeat hover:bg-[length:100%_2px] transition-all duration-500 ease-out' href='/contact'>Contact Us</Link>
-            </nav>
-            
+    <header className="text-gray-600 body-font">
+      <div className="container mx-auto flex flex-col items-center p-5 md:flex-row md:justify-between">
+        <Link
+          className="flex title-font font-medium items-center text-gray-900 justify-center"
+          href="/"
+        >
+          <Image
+            src={logoFull}
+            width={0}
+            height={0}
+            sizes="100vw"
+            alt="Site logo"
+            className="max-w-[5rem] h-full"
+          />
+          <span className="hidden md:block text-xl">photoStockage</span>
+        </Link>
 
-            <div className="flex justify-end ml-0">
+        <nav className="flex flex-wrap items-center text-base mt-3 md:mt-0">
+          <Link
+            className="mr-5 hover:text-gray-900 bg-left-bottom bg-gradient-to-r from-[#4f46e5] to-[#d4d2f4] bg-[length:0%_2px] bg-no-repeat hover:bg-[length:100%_2px] transition-all duration-500 ease-out"
+            href="/"
+          >
+            Home
+          </Link>
+          <Link
+            className="mr-5 hover:text-gray-900 bg-left-bottom bg-gradient-to-r from-[#4f46e5] to-[#d4d2f4] bg-[length:0%_2px] bg-no-repeat hover:bg-[length:100%_2px] transition-all duration-500 ease-out"
+            href="/about"
+          >
+            About
+          </Link>
+          <Link
+            className="mr-5 hover:text-gray-900 bg-left-bottom bg-gradient-to-r from-[#4f46e5] to-[#d4d2f4] bg-[length:0%_2px] bg-no-repeat hover:bg-[length:100%_2px] transition-all duration-500 ease-out"
+            href="/contact"
+          >
+            Contact Us
+          </Link>
+        </nav>
 
-                    <button className="inline-flex items-center text-white bg-indigo-500 border-0 py-1 px-3 focus:outline-none hover:bg-indigo-600 rounded text-base mt-0 mdim:mt-3">
-                        Sign Up
-                    </button>
+        <div className="flex justify-end ml-0">
+          <button className="inline-flex items-center text-white bg-indigo-500 border-0 py-1 px-3 focus:outline-none hover:bg-indigo-600 rounded text-base mt-3 md:mt-0">
+            Sign Up
+          </button>
 
+          <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-3 md:mt-0 ml-5 text-inherit">
+            Login
+          </button>
 
-                        <button className='inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-0 mdim:mt-3 ml-5 text-inherit'>Login</button>
-
-
-
-                    <div className='px-3 pt-1 mdim:pt-5'>
-
-                    </div>
-                
-
-            </div>
+          <div className="px-3 pt-1 md:pt-0"></div>
         </div>
+      </div>
     </header>
-  )
-}
-
-
-/* 
-<SignedIn>
-    <UserButton />
-</SignedIn>
-*/
+  );
+};
