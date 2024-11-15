@@ -6,8 +6,7 @@
 
 # Frontend
 
-- Fix tailwind!
-- Fix footer on mobile
+- Start adding requests
 
 ---
 

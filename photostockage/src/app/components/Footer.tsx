@@ -22,7 +22,7 @@ export const Footer = () => {
             />
             <span className="text-xl">photoStockage</span>
           </Link>
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-gray-500 text-center md:text-left">
             Share your photos, share your experience
           </p>
         </div>
@@ -53,7 +53,7 @@ export const Footer = () => {
             </div>
           </div>
 
-          <div className="flex flex-col items-center mb-10 md:items-start md:pl-20">
+          <div className="flex flex-col items-center text-center md:text-left mb-10 md:items-start md:pl-20">
             <div className="px-0 sm:px-4">
               <h2 className="title-font font-medium text-gray-900 tracking-wideset mb-3">
                 Contact us
