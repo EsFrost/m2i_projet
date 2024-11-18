@@ -6,7 +6,7 @@ import logoFull from "../../../public/logo_full.png";
 export const Footer = () => {
   return (
     <footer className="text-gray-600 body-font mt-[5rem]">
-      <div className="container flex flex-col items-center justify-center py-1 px-5 md:flex-row md:justify-between md:px-[5rem]">
+      <div className="container mx-auto flex flex-col items-center justify-center py-1 px-5 md:flex-row md:justify-between md:px-[5rem]">
         <div className="flex flex-col items-center md:items-start w-64">
           <Link
             className="flex title-font font-medium items-center text-gray-900"
@@ -22,7 +22,7 @@ export const Footer = () => {
             />
             <span className="text-xl">photoStockage</span>
           </Link>
-          <p className="mt-2 text-sm text-gray-500 text-center md:text-left">
+          <p className="mt-2 text-sm text-gray-500 text-center md:text-left md:pl-6">
             Share your photos, share your experience
           </p>
         </div>
