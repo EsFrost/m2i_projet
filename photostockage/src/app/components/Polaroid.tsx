@@ -5,9 +5,7 @@ import Link from "next/link";
 import { Photo } from "../utils/interfaces";
 
 export const Polaroid = () => {
-  const [images, setImages] = useState<Photo[]>([
-    { id: "", user_id: "", name: "", description: "", path: "", status: false },
-  ]);
+  const [images, setImages] = useState<Photo[]>();
 
   useEffect(() => {
     const fetchImages = async () => {

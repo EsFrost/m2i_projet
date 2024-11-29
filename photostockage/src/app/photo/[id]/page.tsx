@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Photo } from "../../utils/interfaces";
@@ -35,7 +35,7 @@ export const SinglePhoto = () => {
         );
 
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`HTTP error status: ${response.status}`);
         }
 
         const data = await response.json();
@@ -53,42 +53,58 @@ export const SinglePhoto = () => {
   }, [id]);
 
   if (loading) {
-    return <div className="p-4">Loading...</div>;
+    return <div className="mt-[5rem] text-center">Loading...</div>;
   }
 
   if (error) {
     return (
-      <div>
+      <div className="mt-[5rem] text-center">
         <p>{error}</p>
       </div>
     );
   }
 
   if (!photo) {
-    return <div className="p-4">No photo found</div>;
+    return <div className="mt-[5rem] text-center">No photo found</div>;
   }
 
   return photo.status ? (
     <>
-      <div className="mx-auto mt-8">
-        <Image
-          src={photo.path}
-          alt="Picture"
-          width={0}
-          height={0}
-          sizes="100vw"
-          className="w-full object-scale-down max-w-[80vw] max-h-[80vh] mx-auto"
-          unoptimized
-        />
-        <div className="p-4">{photo.description}</div>
+      <div className="mt-[5rem] min-h-screen md:min-h-0 mx-auto">
+        <div
+          className="
+          border-solid border-1 border-gray-900 
+          p-[15px] pb-[60px] 
+          shadow-[5px_15px_15px_rgb(225,225,225)] 
+          h-full relative
+          hover:shadow-[-5px_15px_15px_rgb(225,225,225)] 
+          transition-all duration-500
+          after:content-[attr(polaroid-caption)] 
+          after:absolute after:bottom-0 after:left-0 
+          after:w-full after:text-center 
+          after:p-[10px] after:text-[30px]
+        "
+          polaroid-caption={photo.name}
+        >
+          <Image
+            src={photo.path}
+            alt={photo.name}
+            sizes="100vw"
+            width={0}
+            height={0}
+            quality={100}
+            className="w-full h-auto object-scale-down max-w-[80vw] max-h-[80vh] mx-auto"
+            unoptimized
+          />
+        </div>
       </div>
+
+      <div className="mx-8 mt-8">{photo.description}</div>
     </>
   ) : (
-    <>
-      <div>
-        <p>This photo has been made private.</p>
-      </div>
-    </>
+    <div className="mt-[5rem] text-center">
+      <p>This photo has been made private.</p>
+    </div>
   );
 };
 
