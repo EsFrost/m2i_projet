@@ -3,6 +3,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Photo } from "../../utils/interfaces";
+import { Likes } from "@/app/components/Likes";
 
 export const SinglePhoto = () => {
   const [photo, setPhoto] = useState<Photo>({
@@ -96,6 +97,9 @@ export const SinglePhoto = () => {
             className="w-full h-auto object-scale-down max-w-[80vw] max-h-[80vh] mx-auto"
             unoptimized
           />
+        </div>
+        <div className="mt-8">
+          <Likes photo_id={photo.id} />
         </div>
       </div>
 
