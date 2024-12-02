@@ -17,7 +17,7 @@
 - Add cookies and disclaimer for legal
 - When the user is logged in, change login / signup to the user icon (if it doesn't exist set a default one)
 - Create documentation
-- Use single polaroid for photos
+- Use single polaroid for photos (i think this is done)
 
 ---
 
