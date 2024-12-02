@@ -34,7 +34,6 @@ export const Polaroid = () => {
         <div
           key={image.id}
           className="
-        border-solid border-1 border-gray-900 
         p-[15px] pb-[60px] 
         shadow-[5px_15px_15px_rgb(225,225,225)] 
         h-full relative
@@ -47,7 +46,9 @@ export const Polaroid = () => {
         after:p-[10px] after:text-[30px]
         after:transition-all after:opacity-50 
         after:hover:opacity-100 after:duration-1000
-        mx-auto"
+        mx-auto
+        border border-1 border-gray-100
+        "
           polaroid-caption={image.name}
         >
           <Link href={`/photo/${image.id}`}>

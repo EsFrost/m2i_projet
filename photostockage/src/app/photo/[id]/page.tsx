@@ -74,7 +74,7 @@ export const SinglePhoto = () => {
       <div className="mt-[5rem] min-h-screen md:min-h-0 mx-auto">
         <div
           className="
-          border-solid border-1 border-gray-900 
+          border-solid
           p-[15px] pb-[60px] 
           shadow-[5px_15px_15px_rgb(225,225,225)] 
           h-full relative
@@ -84,6 +84,7 @@ export const SinglePhoto = () => {
           after:absolute after:bottom-0 after:left-0 
           after:w-full after:text-center 
           after:p-[10px] after:text-[30px]
+          border border-1 border-gray-100
         "
           polaroid-caption={photo.name}
         >
@@ -103,7 +104,7 @@ export const SinglePhoto = () => {
         </div>
       </div>
 
-      <div className="mx-8 mt-8">{photo.description}</div>
+      <div className="mx-[10rem] mt-8">{photo.description}</div>
     </>
   ) : (
     <div className="mt-[5rem] text-center">
