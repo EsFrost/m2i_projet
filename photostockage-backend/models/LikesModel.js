@@ -50,6 +50,14 @@ function likePhoto(id, u_id, p_id) {
   );
 }
 
+/* Function to check if the user has liked a specific photo */
+function checkUserLike(user_id, photo_id) {
+  return pool.query(
+    "SELECT EXISTS(SELECT 1 FROM likes WHERE id_user = $1 AND id_photo = $2)",
+    [user_id, photo_id]
+  );
+}
+
 /* Helper function that returns all likes */
 /* Pass the ids here to avoid fetching ALL of the data dummass */
 function getAllLikes() {
@@ -63,4 +71,5 @@ module.exports = {
   likePhoto,
   getAllLikes,
   unlikePhoto,
+  checkUserLike,
 };

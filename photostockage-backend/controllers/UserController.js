@@ -49,11 +49,14 @@ async function loginUser(req, res) {
         { expiresIn: "30d" }
       );
 
+      // secure: process.env.NODE_ENV === "production"
       res.cookie("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-        sameSite: "strict", // Added security measure
+        sameSite: "lax", // Added security measure
+        domain: "localhost",
+        path: "/",
       });
 
       res.status(200).json({

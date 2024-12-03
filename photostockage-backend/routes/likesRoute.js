@@ -7,6 +7,11 @@ const { authMiddleware } = require("../middleware/authMiddleware");
 likesRouter.get("/likes/:p_id", likesController.showLikes);
 likesRouter.get("/user/:u_id", authMiddleware, likesController.getUserLikes);
 likesRouter.get("/photo/:p_id", likesController.getPhotoLikes);
+likesRouter.get(
+  "/check/:id_photo",
+  authMiddleware,
+  likesController.checkIfUserLiked
+);
 
 /* method: POST */
 likesRouter.post("/like/:id_photo", authMiddleware, likesController.addLike);

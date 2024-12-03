@@ -1,7 +1,58 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const Hero = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      const tokenExpires = Number(localStorage.getItem("tokenExpires"));
+
+      if (isLoggedIn && Date.now() > tokenExpires) {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("tokenExpires");
+        setIsLoggedIn(false);
+      } else {
+        setIsLoggedIn(isLoggedIn);
+      }
+    };
+
+    checkAuth();
+    const interval = setInterval(checkAuth, 60000);
+    window.addEventListener("storage", checkAuth);
+
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+      clearInterval(interval);
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/user/logout", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("tokenExpires");
+        setIsLoggedIn(false);
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <section className="text-gray-600 body-font px-2 sm:px-[2rem]">
       <div className="container mx-auto flex flex-col px-5 py-24 md:flex-row md:items-center">
@@ -14,16 +65,31 @@ export const Hero = () => {
           <p className="mb-9 leading-relaxed">
             Do you have photos you want to share with others? Do you want to
             find photos to use for your next project? Are you tired of copyright
-            protected material? Then this site is the place to be. Start now by
-            signing up or logging in.
+            protected material? Then this site is the place to be.
+            {!isLoggedIn && " Start now by signing up or logging in."}
           </p>
           <div className="flex justify-center">
-            <button className="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-              Sign Up
-            </button>
-            <button className="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg">
-              Login
-            </button>
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="inline-flex text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded text-lg"
+              >
+                Logout
+              </button>
+            ) : (
+              <>
+                <Link href="/signup">
+                  <button className="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+                    Sign Up
+                  </button>
+                </Link>
+                <Link href="/login">
+                  <button className="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg">
+                    Login
+                  </button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
         <div className="hidden md:block">

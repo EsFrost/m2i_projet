@@ -1,9 +1,49 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import logoFull from "../../../public/logo_full.png";
 
 export const Header = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const isLogged = localStorage.getItem("isLoggedIn") === "true";
+      setIsLoggedIn(isLogged);
+    };
+
+    checkAuth();
+    window.addEventListener("storage", checkAuth);
+
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/user/logout", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("tokenExpires");
+        setIsLoggedIn(false);
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <header className="text-gray-600 body-font">
       <div className="container mx-auto flex flex-col items-center p-5 md:flex-row md:justify-between">
@@ -44,15 +84,27 @@ export const Header = () => {
         </nav>
 
         <div className="flex justify-end ml-0">
-          <button className="inline-flex items-center text-white bg-indigo-500 border-0 py-1 px-3 focus:outline-none hover:bg-indigo-600 rounded text-base mt-3 md:mt-0">
-            Sign Up
-          </button>
-
-          <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-3 md:mt-0 ml-5 text-inherit">
-            Login
-          </button>
-
-          <div className="px-3 pt-1 md:pt-0"></div>
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center bg-red-500 text-white border-0 py-1 px-3 focus:outline-none hover:bg-red-600 rounded text-base mt-3 md:mt-0"
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link href="/signup">
+                <button className="inline-flex items-center text-white bg-indigo-500 border-0 py-1 px-3 focus:outline-none hover:bg-indigo-600 rounded text-base mt-3 md:mt-0">
+                  Sign Up
+                </button>
+              </Link>
+              <Link href="/login">
+                <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-3 md:mt-0 ml-5 text-inherit">
+                  Login
+                </button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

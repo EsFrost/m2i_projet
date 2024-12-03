@@ -4,6 +4,9 @@ import { FcLike, FcDislike } from "react-icons/fc";
 
 export const Likes = ({ photo_id }: { photo_id: string }) => {
   const [likes, setLikes] = useState<{ count: string }[]>([]);
+  const [liked, setLiked] = useState<{ hasLiked: boolean }>({
+    hasLiked: false,
+  });
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -23,12 +26,24 @@ export const Likes = ({ photo_id }: { photo_id: string }) => {
           }
         );
 
-        if (!response.ok) {
+        const likeResponse = await fetch(
+          `http://localhost:3000/likes/check/${photo_id}`,
+          {
+            headers: {
+              Accept: "application/json",
+            },
+            credentials: "include",
+          }
+        );
+
+        if (!response.ok && !likeResponse.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
         setLikes(data);
+        const likeData = await likeResponse.json();
+        setLiked(likeData);
       } catch (error) {
         setError(
           error instanceof Error ? error.message : "Failed to fetch likes."
@@ -52,14 +67,11 @@ export const Likes = ({ photo_id }: { photo_id: string }) => {
   return (
     <div className="flex gap-2 items-center">
       <div className="relative group cursor-pointer">
-        {/* This is for later, if the photo is already liked, then the second condition should apply. It should happen via a useEffect and fetch */}
-        {/* {test === 1 ? (
-          <FcLike className="w-12 h-12 opacity-30 group-hover:opacity-100 duration-300 transition-all group-hover:scale-[1.2]" />
-        ) : (
-          <FcDislike className="w-12 h-12 opacity-30 group-hover:opacity-100 duration-300 transition-all group-hover:scale-[1.2]" />
-        )} */}
-
-        <FcLike className="w-12 h-12 opacity-30 group-hover:opacity-100 duration-300 transition-all group-hover:scale-[1.2]" />
+        <FcLike
+          className={`w-12 h-12 ${
+            liked.hasLiked ? "opacity-100" : "opacity-30"
+          } group-hover:opacity-100 duration-300 transition-all group-hover:scale-[1.2]`}
+        />
       </div>
 
       {likes.length > 0 && likes[0].count === "1" ? (

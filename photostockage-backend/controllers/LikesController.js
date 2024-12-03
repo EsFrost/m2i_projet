@@ -118,10 +118,37 @@ async function deleteLike(req, res) {
   }
 }
 
+/* Check if user has liked specific photo */
+async function checkIfUserLiked(req, res) {
+  if (!req.user) {
+    return res.status(401).json({ error: "Authentication required" });
+  }
+  let { id_photo } = req.params;
+  id_photo = sanitizeHtml(id_photo);
+  const id_user = req.user.id; // From the JWT token
+
+  if (!validator.isUUID(id_photo) || !validator.isUUID(id_user)) {
+    return res.status(400).json({
+      error: `Invalid photo or user ID: photo: ${id_photo} user: ${id_user}`,
+    });
+  }
+
+  try {
+    const result = await likesModel.checkUserLike(id_user, id_photo);
+    res.status(200).json({ hasLiked: result.rows[0].exists });
+  } catch (err) {
+    res.status(500).json({
+      error: "Internal server error",
+      details: err.message,
+    });
+  }
+}
+
 module.exports = {
   showLikes,
   getUserLikes,
   getPhotoLikes,
   addLike,
   deleteLike,
+  checkIfUserLiked,
 };
