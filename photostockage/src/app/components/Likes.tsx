@@ -64,9 +64,89 @@ export const Likes = ({ photo_id }: { photo_id: string }) => {
     return <p>{error}</p>;
   }
 
+  const handleLikeUnlike = async () => {
+    if (liked.hasLiked) {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/likes/like/${photo_id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Accept: "application/json",
+            },
+            credentials: "include",
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Refetch likes after unliking
+        const likesResponse = await fetch(
+          `http://localhost:3000/likes/likes/${photo_id}`,
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+
+        if (!likesResponse.ok) {
+          throw new Error(`HTTP error! status: ${likesResponse.status}`);
+        }
+
+        const likesData = await likesResponse.json();
+        setLikes(likesData);
+        setLiked({ hasLiked: false });
+      } catch (error) {
+        setError(
+          error instanceof Error ? error.message : "Failed to fetch likes."
+        );
+      }
+    } else {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/likes/like/${photo_id}`,
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+            },
+            credentials: "include",
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Refetch likes after liking
+        const likesResponse = await fetch(
+          `http://localhost:3000/likes/likes/${photo_id}`,
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+
+        if (!likesResponse.ok) {
+          throw new Error(`HTTP error! status: ${likesResponse.status}`);
+        }
+
+        const likesData = await likesResponse.json();
+        setLikes(likesData);
+        setLiked({ hasLiked: true });
+      } catch (error) {
+        setError(
+          error instanceof Error ? error.message : "Failed to fetch likes."
+        );
+      }
+    }
+  };
+
   return (
     <div className="flex gap-2 items-center">
-      <div className="relative group cursor-pointer">
+      <div className="relative group cursor-pointer" onClick={handleLikeUnlike}>
         <FcLike
           className={`w-12 h-12 ${
             liked.hasLiked ? "opacity-100" : "opacity-30"
@@ -75,9 +155,9 @@ export const Likes = ({ photo_id }: { photo_id: string }) => {
       </div>
 
       {likes.length > 0 && likes[0].count === "1" ? (
-        <p className="text-xl">{likes[0].count} Like</p>
+        <p className="text-xl">{likes[0]?.count} Like</p>
       ) : (
-        <p className="text-xl">{likes[0].count} Likes</p>
+        <p className="text-xl">{likes[0]?.count} Likes</p>
       )}
     </div>
   );

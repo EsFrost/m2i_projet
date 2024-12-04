@@ -1,5 +1,0 @@
-add message if return.rows is emtpy
-add message for errors
-implement tokens
-implement bcrypt for users controller
-add requests to postman
