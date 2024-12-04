@@ -16,13 +16,12 @@ export const Comments = ({ photo_id }: { photo_id: string }) => {
       if (!photo_id) return;
 
       try {
-        // Fetch both comments and users in parallel with correct endpoint
+        // Fetch both comments and users in parallel
         const [commentsResponse, usersResponse] = await Promise.all([
           fetch(`http://localhost:3000/comments/photo/${photo_id}`, {
             headers: { Accept: "application/json" },
           }),
           fetch(`http://localhost:3000/user/users`, {
-            // Corrected URL
             headers: { Accept: "application/json" },
           }),
         ]);
@@ -63,7 +62,9 @@ export const Comments = ({ photo_id }: { photo_id: string }) => {
     return <div>Loading...</div>;
   }
 
-  if (!loading) console.log(comments);
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div>
