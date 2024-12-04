@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Comment, User } from "../utils/interfaces";
+import SlateEditor from "./SlateEditor";
 
 interface CommentWithUser extends Comment {
   username?: string;
@@ -67,13 +68,16 @@ export const Comments = ({ photo_id }: { photo_id: string }) => {
   }
 
   return (
-    <div>
+    <div className="">
       <div>Comments</div>
       {comments.map((comment) => (
         <div key={comment.id}>
           {comment.content} {comment.username}
         </div>
       ))}
+      <div className="mt-8 max-w-xl mx-auto">
+        <SlateEditor />
+      </div>
     </div>
   );
 };
