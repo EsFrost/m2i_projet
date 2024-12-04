@@ -4,6 +4,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Photo } from "../../utils/interfaces";
 import { Likes } from "@/app/components/Likes";
+import { Comments } from "@/app/components/Comments";
 
 export const SinglePhoto = () => {
   const [photo, setPhoto] = useState<Photo>({
@@ -105,6 +106,10 @@ export const SinglePhoto = () => {
       </div>
 
       <div className="mx-[10rem] mt-8">{photo.description}</div>
+
+      <div className="mt-8">
+        <Comments photo_id={photo.id} />
+      </div>
     </>
   ) : (
     <div className="mt-[5rem] text-center">

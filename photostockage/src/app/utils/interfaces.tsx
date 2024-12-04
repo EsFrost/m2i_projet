@@ -6,3 +6,18 @@ export interface Photo {
   path: string;
   status: boolean;
 }
+
+export interface Comment {
+  id: string;
+  content: string;
+  id_photo: string;
+  id_user: string;
+  statues: boolean;
+}
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  user_icon: string;
+}

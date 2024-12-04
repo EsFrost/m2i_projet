@@ -1,11 +1,11 @@
 const { pool } = require("../utils/db");
 
 function getUsers() {
-  return pool.query(`SELECT * FROM users`);
+  return pool.query(`SELECT id, username, email, user_icon FROM users`);
 }
 
 function getUser(id) {
-  const req = `SELECT * FROM users WHERE id = $1`;
+  const req = `SELECT id, username, email, user_icon FROM users WHERE id = $1`;
   return pool.query(req, [id]);
 }
 

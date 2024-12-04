@@ -10,7 +10,6 @@
 - Create a dashboard for users and admins
 - Add the comments section
 - Add a wysiwyg editor
-- Add the likes
 - Add downloads when clicked on download
 - Add content in about
 - Add cookies and disclaimer for legal
