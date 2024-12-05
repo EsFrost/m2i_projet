@@ -108,7 +108,7 @@ async function newPhoto(req, res) {
   if (
     validator.isUUID(user_id) &&
     validator.isUUID(id) &&
-    (validator.isURL(path) ||
+    (validator.isAlphanumeric(path) ||
       path === "" ||
       path === null ||
       path === undefined) &&

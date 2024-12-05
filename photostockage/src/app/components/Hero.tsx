@@ -24,10 +24,14 @@ export const Hero = () => {
 
     checkAuth();
     const interval = setInterval(checkAuth, 60000);
+
+    // Add listener for logout event
+    window.addEventListener("logoutEvent", checkAuth);
     window.addEventListener("storage", checkAuth);
 
     return () => {
       window.removeEventListener("storage", checkAuth);
+      window.removeEventListener("logoutEvent", checkAuth);
       clearInterval(interval);
     };
   }, []);
@@ -47,6 +51,8 @@ export const Hero = () => {
         localStorage.removeItem("tokenExpires");
         setIsLoggedIn(false);
         router.push("/");
+        // Dispatch a custom event
+        window.dispatchEvent(new Event("logoutEvent"));
       }
     } catch (error) {
       console.error("Logout failed:", error);
@@ -78,7 +84,7 @@ export const Hero = () => {
               </button>
             ) : (
               <>
-                <Link href="/signup">
+                <Link href="/register">
                   <button className="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
                     Sign Up
                   </button>

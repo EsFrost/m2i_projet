@@ -15,7 +15,21 @@ export default function LoginPage() {
   });
   const [loginError, setLoginError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      const tokenExpires = localStorage.getItem("tokenExpires");
+      const isAuthenticated =
+        isLoggedIn && tokenExpires && Number(tokenExpires) > Date.now();
+
+      if (isAuthenticated) {
+        router.push("/");
+      }
+    };
+
+    checkAuth();
+  }, [router]);
 
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,8 +107,6 @@ export default function LoginPage() {
           password: sanitizedData.password,
         }),
       });
-
-      //   const data = await response.json(); // not used somewhere
 
       if (response.ok) {
         // After successful login, check if cookie was set

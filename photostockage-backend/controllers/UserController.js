@@ -139,7 +139,7 @@ async function registerUser(req, res) {
     validator.isAlphanumeric(username) &&
     validator.isEmail(email) &&
     validator.isAlphanumeric(password) &&
-    (validator.isURL(user_icon) ||
+    (validator.isAlphanumeric(user_icon) ||
       user_icon === "" ||
       user_icon === null ||
       user_icon === undefined)

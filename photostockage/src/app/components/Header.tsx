@@ -11,15 +11,27 @@ export const Header = () => {
 
   useEffect(() => {
     const checkAuth = () => {
-      const isLogged = localStorage.getItem("isLoggedIn") === "true";
-      setIsLoggedIn(isLogged);
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      const tokenExpires = Number(localStorage.getItem("tokenExpires"));
+
+      if (isLoggedIn && Date.now() > tokenExpires) {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("tokenExpires");
+        setIsLoggedIn(false);
+      } else {
+        setIsLoggedIn(isLoggedIn);
+      }
     };
 
     checkAuth();
+
+    // Listen for both storage and logout events
     window.addEventListener("storage", checkAuth);
+    window.addEventListener("logoutEvent", checkAuth);
 
     return () => {
       window.removeEventListener("storage", checkAuth);
+      window.removeEventListener("logoutEvent", checkAuth);
     };
   }, []);
 
@@ -38,6 +50,8 @@ export const Header = () => {
         localStorage.removeItem("tokenExpires");
         setIsLoggedIn(false);
         router.push("/");
+        // Dispatch a custom event
+        window.dispatchEvent(new Event("logoutEvent"));
       }
     } catch (error) {
       console.error("Logout failed:", error);
@@ -93,7 +107,7 @@ export const Header = () => {
             </button>
           ) : (
             <>
-              <Link href="/signup">
+              <Link href="/register">
                 <button className="inline-flex items-center text-white bg-indigo-500 border-0 py-1 px-3 focus:outline-none hover:bg-indigo-600 rounded text-base mt-3 md:mt-0">
                   Sign Up
                 </button>
