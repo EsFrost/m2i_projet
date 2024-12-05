@@ -86,40 +86,45 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setLoginError("");
-    if (!validateForm()) {
-      return;
-    }
-
+    if (!validateForm()) return;
     setIsLoading(true);
-    const sanitizedData = sanitizeData(formData);
 
     try {
       const response = await fetch("http://localhost:3000/user/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({
-          email: sanitizedData.email,
-          password: sanitizedData.password,
-        }),
+        body: JSON.stringify(sanitizeData(formData)),
       });
 
-      if (response.ok) {
-        // After successful login, check if cookie was set
+      const loginData = await response.json();
+      const token = loginData.token;
+      const tokenParts = token.split(".");
+      const payload = JSON.parse(atob(tokenParts[1]));
 
-        const expiresIn = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("tokenExpires", String(Date.now() + expiresIn));
+      const userResponse = await fetch(
+        `http://localhost:3000/user/user/${payload.id}`,
+        {
+          credentials: "include",
+          headers: { Accept: "application/json" },
+        }
+      );
 
-        window.dispatchEvent(new Event("storage"));
-        router.push("/");
-      }
+      const userData = await userResponse.json();
+      const user = userData[0]; // Access first element of array
+
+      const expiresIn = 30 * 24 * 60 * 60 * 1000;
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("tokenExpires", String(Date.now() + expiresIn));
+      localStorage.setItem("user_icon", user.user_icon || "");
+
+      window.dispatchEvent(new Event("storage"));
+      router.push("/");
     } catch (error) {
       console.error("Login error:", error);
+      setLoginError(error instanceof Error ? error.message : "Login failed");
+      setIsLoading(false);
     }
   };
 

@@ -4,28 +4,32 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import logoFull from "../../../public/logo_full.png";
+import { FaRegCircleUser } from "react-icons/fa6";
 
 export const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+  const [user_icon, setuser_icon] = useState<string>("");
 
   useEffect(() => {
     const checkAuth = () => {
       const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
       const tokenExpires = Number(localStorage.getItem("tokenExpires"));
+      const user_icon = localStorage.getItem("user_icon") || "";
 
       if (isLoggedIn && Date.now() > tokenExpires) {
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("tokenExpires");
+        localStorage.removeItem("user_icon");
         setIsLoggedIn(false);
+        setuser_icon("");
       } else {
         setIsLoggedIn(isLoggedIn);
+        setuser_icon(user_icon);
       }
     };
 
     checkAuth();
-
-    // Listen for both storage and logout events
     window.addEventListener("storage", checkAuth);
     window.addEventListener("logoutEvent", checkAuth);
 
@@ -48,9 +52,9 @@ export const Header = () => {
       if (response.ok) {
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("tokenExpires");
+        localStorage.removeItem("user_icon");
         setIsLoggedIn(false);
         router.push("/");
-        // Dispatch a custom event
         window.dispatchEvent(new Event("logoutEvent"));
       }
     } catch (error) {
@@ -99,12 +103,26 @@ export const Header = () => {
 
         <div className="flex justify-end ml-0">
           {isLoggedIn ? (
-            <button
-              onClick={handleLogout}
-              className="inline-flex items-center bg-red-500 text-white border-0 py-1 px-3 focus:outline-none hover:bg-red-600 rounded text-base mt-3 md:mt-0"
-            >
-              Logout
-            </button>
+            <div className="flex items-center gap-4">
+              {user_icon ? (
+                <Image
+                  src={user_icon}
+                  alt="User icon"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  className="rounded-full object-cover w-8 h-8"
+                />
+              ) : (
+                <FaRegCircleUser className="w-8 h-8 text-gray-600" />
+              )}
+              <button
+                onClick={handleLogout}
+                className="inline-flex items-center bg-red-500 text-white border-0 py-1 px-3 focus:outline-none hover:bg-red-600 rounded text-base mt-3 md:mt-0"
+              >
+                Logout
+              </button>
+            </div>
           ) : (
             <>
               <Link href="/register">

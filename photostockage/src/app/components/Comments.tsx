@@ -2,9 +2,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Comment, User } from "../utils/interfaces";
 import SlateEditor from "./SlateEditor";
+import { FaRegCircleUser } from "react-icons/fa6";
+import Image from "next/image";
 
 interface CommentWithUser extends Comment {
   username?: string;
+  user_icon?: string;
 }
 
 export const Comments = ({ photo_id }: { photo_id: string }) => {
@@ -54,13 +57,22 @@ export const Comments = ({ photo_id }: { photo_id: string }) => {
       const usersData: User[] = await usersResponse.json();
 
       const userMap = new Map(
-        usersData.map((user) => [user.id, user.username])
+        usersData.flatMap((user) => [
+          [user.id, { username: user.username, user_icon: user.user_icon }],
+        ])
       );
 
-      const commentsWithUsernames = commentsData.map((comment: Comment) => ({
-        ...comment,
-        username: userMap.get(comment.id_user) || "Unknown User",
-      }));
+      const commentsWithUsernames = commentsData.map((comment: Comment) => {
+        const userData = userMap.get(comment.id_user) || {
+          username: "Unknown User",
+          user_icon: "",
+        };
+        return {
+          ...comment,
+          username: userData.username,
+          user_icon: userData.user_icon,
+        };
+      });
 
       setComments(commentsWithUsernames);
     } catch (error) {
@@ -73,7 +85,9 @@ export const Comments = ({ photo_id }: { photo_id: string }) => {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]); // No warning now!
+    const interval = setInterval(fetchData, 5000);
+    return () => clearInterval(interval);
+  }, [fetchData]);
 
   const handleCommentSubmit = async (content: string) => {
     try {
@@ -125,9 +139,25 @@ export const Comments = ({ photo_id }: { photo_id: string }) => {
           <div className={`${index % 2 === 0 ? "text-left" : "text-right"}`}>
             {comment.content}
           </div>
-          <div className={`${index % 2 === 0 ? "text-right" : "text-left"}`}>
-            {" "}
-            {comment.username}
+          <div
+            className={`${
+              index % 2 === 0 ? "text-right" : "text-left"
+            } flex items-center gap-2 ${
+              index % 2 === 0 ? "justify-end" : "justify-start"
+            }`}
+          >
+            {comment.user_icon ? (
+              <Image
+                src={comment.user_icon}
+                alt="User avatar"
+                width={24}
+                height={24}
+                className="rounded-full object-cover w-6 h-6"
+              />
+            ) : (
+              <FaRegCircleUser className="w-6 h-6 text-gray-600" />
+            )}
+            <span>{comment.username}</span>
           </div>
         </div>
       ))}

@@ -12,7 +12,7 @@ export interface Comment {
   content: string;
   id_photo: string;
   id_user: string;
-  statues: boolean;
+  status: boolean;
 }
 
 export interface User {

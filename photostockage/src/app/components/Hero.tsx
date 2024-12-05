@@ -49,9 +49,9 @@ export const Hero = () => {
       if (response.ok) {
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("tokenExpires");
+        localStorage.removeItem("user_icon");
         setIsLoggedIn(false);
         router.push("/");
-        // Dispatch a custom event
         window.dispatchEvent(new Event("logoutEvent"));
       }
     } catch (error) {
