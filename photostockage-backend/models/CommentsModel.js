@@ -13,7 +13,7 @@ function getAllPhotoComments(p_id) {
 
 function addComment(id, user_id, photo_id, content) {
   return pool.query(
-    `INSERT INTO comments (id, id_user, id_photo, content) VALUES ($1, $2, $3, $4) RETURNING (id, id_photo)`,
+    `INSERT INTO comments (id, id_user, id_photo, content, status) VALUES ($1, $2, $3, $4, true) RETURNING (id, id_photo)`,
     [id, user_id, photo_id, content]
   );
 }

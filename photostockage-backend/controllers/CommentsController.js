@@ -39,9 +39,15 @@ async function showAllPhotoComments(req, res) {
   }
 }
 
+// If html tags are to be added
+// const sanitizeOptions = {
+//   allowedTags: ["b", "i", "em", "strong", "u", "s", "h1", "h2", "h3", "p"],
+//   allowedAttributes: {}, // No attributes allowed
+// };
+
 async function addComment(req, res) {
   const photo_id = sanitizeHtml(req.params.photo_id);
-  const { content } = req.body;
+  const content = sanitizeHtml(req.body.content);
   const user_id = req.user.id;
   const id = uuidv4();
 
