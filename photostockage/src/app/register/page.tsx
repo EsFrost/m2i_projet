@@ -158,28 +158,51 @@ export default function RegisterPage() {
     return isValid;
   };
 
+  const clearImageSelection = () => {
+    setFormData((prev) => ({
+      ...prev,
+      user_icon: null,
+    }));
+    setPreviewUrl("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
+    if (!validateForm()) return;
     setIsLoading(true);
 
     try {
-      const imagePath = formData.user_icon
-        ? `${Date.now()}${formData.user_icon.name.replace(/[^a-zA-Z0-9]/g, "")}`
-        : "";
+      let imagePath = "";
+      if (formData.user_icon) {
+        const fileData = new FormData();
+        const fileIdentifier = crypto.randomUUID();
+        fileData.append("file", formData.user_icon);
+        fileData.append("identifier", fileIdentifier);
+
+        const uploadResponse = await fetch("/api/upload", {
+          method: "POST",
+          body: fileData,
+        });
+
+        const uploadResult = await uploadResponse.json();
+        if (!uploadResponse.ok || !uploadResult.success) {
+          throw new Error(uploadResult.error || "Image upload failed");
+        }
+
+        imagePath = uploadResult.fileUrl;
+      }
 
       const requestBody = {
         username: formData.username,
         email: formData.email,
         password: formData.password,
-        user_icon: imagePath || "",
+        user_icon: imagePath,
       };
 
-      const response = await fetch("http://localhost:3000/user/register", {
+      const response = await fetch(`http://localhost:3000/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -188,7 +211,6 @@ export default function RegisterPage() {
       });
 
       const responseData = await response.json();
-
       if (!response.ok) {
         throw new Error(responseData.message || "Registration failed");
       }
@@ -365,19 +387,29 @@ export default function RegisterPage() {
                   />
                   <div className="flex flex-col items-center gap-4">
                     {previewUrl && (
-                      <Image
-                        src={previewUrl}
-                        alt="Profile preview"
-                        width={100}
-                        height={100}
-                        className="rounded-full object-cover"
-                      />
+                      <>
+                        <Image
+                          src={previewUrl}
+                          alt="Profile preview"
+                          width={100}
+                          height={100}
+                          className="rounded-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={clearImageSelection}
+                          disabled={registrationSuccess}
+                          className="text-red-500 hover:text-red-700 font-semibold py-1 px-3 rounded disabled:opacity-50"
+                        >
+                          Remove Photo
+                        </button>
+                      </>
                     )}
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
                       disabled={registrationSuccess}
-                      className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded shadow disabled:opacity-50 mt-8"
+                      className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded shadow disabled:opacity-50 mt-2"
                     >
                       Choose Profile Picture
                     </button>

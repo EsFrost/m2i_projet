@@ -139,7 +139,7 @@ async function registerUser(req, res) {
     validator.isAlphanumeric(username) &&
     validator.isEmail(email) &&
     validator.isAlphanumeric(password) &&
-    (validator.isAlphanumeric(user_icon) ||
+    (validator.isAscii(user_icon) ||
       user_icon === "" ||
       user_icon === null ||
       user_icon === undefined)
@@ -265,7 +265,7 @@ async function changeUser(req, res) {
   if (
     validator.isUUID(id) &&
     validator.isAlphanumeric(username) &&
-    (validator.isURL(user_icon) ||
+    (validator.isAscii(user_icon) ||
       user_icon === "" ||
       user_icon === null ||
       user_icon === undefined)
