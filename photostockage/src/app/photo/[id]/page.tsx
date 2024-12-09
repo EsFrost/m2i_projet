@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Photo } from "../../utils/interfaces";
 import { Likes } from "@/app/components/Likes";
 import { Comments } from "@/app/components/Comments";
+import DownloadButton from "@/app/components/DownloadButton";
 
 export const SinglePhoto = () => {
   const [photo, setPhoto] = useState<Photo>({
@@ -21,6 +22,8 @@ export const SinglePhoto = () => {
 
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchPhoto = async () => {
@@ -51,6 +54,17 @@ export const SinglePhoto = () => {
       }
     };
 
+    const checkAuth = () => {
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      const tokenExpires = localStorage.getItem("tokenExpires");
+      const isAuthenticated =
+        isLoggedIn && tokenExpires && Number(tokenExpires) > Date.now();
+
+      setIsAuthenticated(Boolean(isAuthenticated));
+    };
+
+    checkAuth();
+
     fetchPhoto();
   }, [id]);
 
@@ -69,6 +83,55 @@ export const SinglePhoto = () => {
   if (!photo) {
     return <div className="mt-[5rem] text-center">No photo found</div>;
   }
+
+  const handleDownload = async () => {
+    try {
+      // If user is authenticated, track the download
+      if (isAuthenticated) {
+        try {
+          const response = await fetch(
+            `http://localhost:3000/downloads/download/${photo.id}`,
+            {
+              method: "POST",
+              credentials: "include",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            console.error("Failed to track download");
+          }
+        } catch (error) {
+          console.error("Error tracking download:", error);
+          // Continue with download even if tracking fails
+        }
+      }
+
+      // Proceed with download regardless of authentication status
+      const response = await fetch(photo.path);
+      const blob = await response.blob();
+
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+
+      // Get file extension from path or default to .jpg
+      const extension = photo.path.split(".").pop() || "jpg";
+      link.download = `${photo.name}.${extension}`;
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.error("Download failed:", error);
+      // You might want to add some error handling UI here
+    }
+  };
 
   return photo.status ? (
     <>
@@ -100,8 +163,9 @@ export const SinglePhoto = () => {
             unoptimized
           />
         </div>
-        <div className="mt-8">
+        <div className="mt-8 flex justify-between">
           <Likes photo_id={photo.id} />
+          <DownloadButton onClick={handleDownload} />
         </div>
       </div>
 

@@ -7,11 +7,10 @@
 # Frontend
 
 - Create a dashboard for users and admins
-- Add downloads when clicked on download
 - Add content in about
 - Add cookies and disclaimer for legal
 - Create documentation
 
 ---
 
-### **_Updated at :_** 08-12-24
+### **_Updated at :_** 09-12-24
