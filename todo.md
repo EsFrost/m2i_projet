@@ -7,8 +7,6 @@
 # Frontend
 
 - Create a dashboard for users and admins
-- Add content in about
-- Add cookies and disclaimer for legal
 - Create documentation
 
 ---
