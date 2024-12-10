@@ -3,7 +3,7 @@ import Image from "next/image";
 import { createEditor, Descendant, BaseEditor } from "slate";
 import { Slate, Editable, withReact, ReactEditor } from "slate-react";
 import { withHistory } from "slate-history";
-import { Photo, Comment, User } from "../../../utils/interfaces";
+import { Photo, Comment, User, Category } from "@/app/utils/interfaces";
 import { ArrowLeft, Save, Trash2 } from "lucide-react";
 import { FaRegCircleUser } from "react-icons/fa6";
 
@@ -48,6 +48,8 @@ export const MyPhotos = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [comments, setComments] = useState<CommentWithUser[]>([]);
   const [commentsLoading, setCommentsLoading] = useState(true);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   // Slate editor setup
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
@@ -148,6 +150,31 @@ export const MyPhotos = () => {
         children: [{ text: photo.description || "" }],
       },
     ]);
+
+    // Fetch categories and current photo's category
+    try {
+      const [categoriesResponse, currentCategoryResponse] = await Promise.all([
+        fetch("http://localhost:3000/categories", {
+          headers: { Accept: "application/json" },
+        }),
+        fetch(`http://localhost:3000/photos_categories/photo/${photo.id}`, {
+          headers: { Accept: "application/json" },
+        }),
+      ]);
+
+      const categoriesData = await categoriesResponse.json();
+      setCategories(categoriesData);
+
+      if (currentCategoryResponse.ok) {
+        const categoryData = await currentCategoryResponse.json();
+        if (categoryData && categoryData.length > 0) {
+          setSelectedCategory(categoryData[0].id);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+
     setCommentsLoading(true);
     await fetchComments(photo.id);
   };
@@ -186,6 +213,22 @@ export const MyPhotos = () => {
 
       if (!response.ok) {
         throw new Error("Failed to update photo");
+      }
+
+      // Update category if changed
+      if (selectedCategory) {
+        // First, we'll add the new category relationship
+        await fetch(`http://localhost:3000/photos_categories/add`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            photo_id: editingPhoto.id,
+            category_id: selectedCategory,
+          }),
+        });
       }
 
       // Refresh the photos list
@@ -287,6 +330,25 @@ export const MyPhotos = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder={editingPhoto.name}
             />
+          </div>
+
+          {/* Category field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Category
+            </label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="">Select a category</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Description field */}
