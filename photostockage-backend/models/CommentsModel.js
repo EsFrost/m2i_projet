@@ -42,6 +42,23 @@ function getCommentDetails(comment_id) {
   return pool.query(`SELECT * FROM comments WHERE id = $1`, [comment_id]);
 }
 
+// Get user's comments
+function getUserComments(user_id) {
+  return pool.query(
+    `SELECT 
+      c.id as comment_id,
+      c.content,
+      c.status as comment_status,
+      p.id as photo_id,
+      p.name as photo_name,
+      p.status as photo_status
+    FROM comments c
+    JOIN photos p ON c.id_photo = p.id
+    WHERE c.id_user = $1`,
+    [user_id]
+  );
+}
+
 module.exports = {
   getPhotoComments,
   getAllPhotoComments,
@@ -50,4 +67,5 @@ module.exports = {
   edtiComment,
   getPhotoStatus,
   getCommentDetails,
+  getUserComments,
 };

@@ -6,6 +6,11 @@ const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 /* Public routes */
 commentsRouter.get("/photo/:p_id", commentsController.showActivePhotoComments);
 commentsRouter.get("/c_photo/:p_id", commentsController.showAllPhotoComments);
+commentsRouter.get(
+  "/user/:user_id",
+  authMiddleware,
+  commentsController.showUserComments
+);
 
 /* Protected routes - require authentication */
 // Add new comment

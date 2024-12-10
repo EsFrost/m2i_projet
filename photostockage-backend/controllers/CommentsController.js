@@ -179,10 +179,36 @@ async function deleteComment(req, res) {
   }
 }
 
+async function showUserComments(req, res) {
+  const user_id = req.params.user_id;
+
+  if (!validator.isUUID(user_id)) {
+    return res.status(400).json({ error: "Invalid user ID format" });
+  }
+
+  // Check if user is requesting their own comments
+  if (user_id !== req.user.id) {
+    return res
+      .status(403)
+      .json({ error: "Not authorized to view these comments" });
+  }
+
+  try {
+    const result = await commentsModel.getUserComments(user_id);
+    res.status(200).json(result.rows);
+  } catch (err) {
+    res.status(500).json({
+      error: "Failed to retrieve user comments",
+      details: err.message,
+    });
+  }
+}
+
 module.exports = {
   showActivePhotoComments,
   showAllPhotoComments,
   addComment,
   editComment,
   deleteComment,
+  showUserComments,
 };
