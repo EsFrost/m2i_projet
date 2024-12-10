@@ -105,16 +105,20 @@ export const Header = () => {
           {isLoggedIn ? (
             <div className="flex items-center gap-4">
               {user_icon ? (
-                <Image
-                  src={user_icon}
-                  alt="User icon"
-                  width={0}
-                  height={0}
-                  sizes="100vw"
-                  className="rounded-full object-cover w-8 h-8"
-                />
+                <Link href="/dashboard">
+                  <Image
+                    src={user_icon}
+                    alt="User icon"
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    className="rounded-full object-cover w-8 h-8"
+                  />
+                </Link>
               ) : (
-                <FaRegCircleUser className="w-8 h-8 text-gray-600" />
+                <Link href="/dashboard">
+                  <FaRegCircleUser className="w-8 h-8 text-gray-600" />
+                </Link>
               )}
               <button
                 onClick={handleLogout}

@@ -13,13 +13,13 @@ import {
   Plus,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import AddPhotoForm from "../components/dashboard/user/AddPhotoForm";
 
 // Example dashboard components - replace with your actual components
 const DashboardHome = () => <div className="p-4">Dashboard Home Content</div>;
 const Photos = () => <div className="p-4">Photos Management</div>;
 const Comments = () => <div className="p-4">Comments Management</div>;
 const UsersManagement = () => <div className="p-4">Users Management</div>;
-const AddPhoto = () => <div className="p-4">Add Photo Form</div>;
 const MyPhotos = () => <div className="p-4">My Photos</div>;
 const MyFavorites = () => <div className="p-4">My Favorites</div>;
 const MyDownloads = () => <div className="p-4">My Downloads</div>;
@@ -41,7 +41,7 @@ const adminMenuOptions = [
 
 const userMenuOptions = [
   { id: "account", label: "My Account", icon: User, component: MyAccount },
-  { id: "addPhoto", label: "Add Photo", icon: Plus, component: AddPhoto },
+  { id: "addPhoto", label: "Add Photo", icon: Plus, component: AddPhotoForm },
   { id: "myPhotos", label: "My Photos", icon: Upload, component: MyPhotos },
   {
     id: "favorites",
