@@ -153,7 +153,7 @@ export default function Dashboard() {
         <div
           className={`${
             isMenuOpen ? "block" : "hidden"
-          } lg:block w-64 bg-white shadow-lg fixed top-0 left-0 z-50 overflow-y-auto lg:relative h-[100vh]`}
+          } lg:block w-64 bg-white shadow-lg fixed top-0 left-0 z-50 overflow-y-auto lg:relative min-h-[100vh]`}
         >
           <nav className="mt-4">
             {menuOptions.map((option) => (

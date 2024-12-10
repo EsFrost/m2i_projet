@@ -5,7 +5,6 @@ import { withHistory } from "slate-history";
 import { Upload, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 // Define custom types for plain text
 type CustomElement = {
@@ -54,8 +53,6 @@ const AddPhotoForm = () => {
   const renderElement = useCallback((props: any) => {
     return <p {...props.attributes}>{props.children}</p>;
   }, []);
-
-  const router = useRouter();
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
