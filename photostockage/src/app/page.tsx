@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <main className="min-h-[100vh]">
+      <main className="min-h-screen">
         <Polaroid />
       </main>
     </>

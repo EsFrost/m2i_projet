@@ -5,7 +5,7 @@ import logoFull from "../../../public/logo_full.png";
 
 export const Footer = () => {
   return (
-    <footer className="text-gray-600 body-font">
+    <footer className="text-gray-600 body-font mt-8">
       <div className="container mx-auto flex flex-col items-center justify-center py-4 px-5 md:flex-row md:justify-between md:px-[5rem]">
         <div className="flex flex-col items-center md:items-start w-64">
           <Link

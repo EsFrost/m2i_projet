@@ -146,12 +146,12 @@ export default function Dashboard() {
 
       {/* Mobile Overlay and Menu code stays the same */}
 
-      <div className="flex h-[100vh]">
+      <div className="flex">
         {/* Desktop Sidebar */}
         <div
           className={`${
             isMenuOpen ? "block" : "hidden"
-          } lg:block w-64 bg-white shadow-lg h-full fixed top-0 left-0 z-50 overflow-y-auto lg:relative`}
+          } lg:block w-64 bg-white shadow-lg fixed top-0 left-0 z-50 overflow-y-auto lg:relative h-[100vh]`}
         >
           <nav className="mt-4">
             {menuOptions.map((option) => (
@@ -176,7 +176,7 @@ export default function Dashboard() {
         {/* Main Content */}
         <main
           className={`flex-1 transition-all duration-300
-          ${isMenuOpen ? "blur-sm lg:blur-none" : ""}`}
+          ${isMenuOpen ? "blur-sm lg:blur-none" : ""} min-h-[100vh]`}
         >
           <div className="p-4">
             <h1 className="text-2xl font-semibold mb-4">
