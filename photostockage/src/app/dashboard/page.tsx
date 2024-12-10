@@ -15,12 +15,12 @@ import {
 import { useRouter } from "next/navigation";
 import AddPhotoForm from "../components/dashboard/user/AddPhotoForm";
 import { MyPhotos } from "../components/dashboard/user/MyPhotos";
+import { Downloads } from "../components/dashboard/user/Downloads";
 
 const Photos = () => <div className="p-4">Photos Management</div>;
 const Comments = () => <div className="p-4">Comments Management</div>;
 const UsersManagement = () => <div className="p-4">Users Management</div>;
 const MyFavorites = () => <div className="p-4">My Favorites</div>;
-const MyDownloads = () => <div className="p-4">My Downloads</div>;
 const MyAccount = () => <div className="p-4">My Account</div>;
 
 // Menu configurations for different roles
@@ -42,6 +42,12 @@ const userMenuOptions = [
   { id: "addPhoto", label: "Add Photo", icon: Plus, component: AddPhotoForm },
   { id: "myPhotos", label: "My Photos", icon: Upload, component: MyPhotos },
   {
+    id: "myComment",
+    label: "My Comments",
+    icon: MessageSquare,
+    component: Comments,
+  },
+  {
     id: "favorites",
     label: "My Favorites",
     icon: Heart,
@@ -51,7 +57,7 @@ const userMenuOptions = [
     id: "downloads",
     label: "My Downloads",
     icon: Download,
-    component: MyDownloads,
+    component: Downloads,
   },
   { id: "logout", label: "Logout", icon: LogOut, component: null },
 ];
