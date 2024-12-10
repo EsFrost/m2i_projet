@@ -1,10 +1,16 @@
-import React, { useState, useRef, useMemo, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+  useEffect,
+} from "react";
 import { createEditor, Descendant, BaseEditor } from "slate";
 import { Slate, Editable, withReact, ReactEditor } from "slate-react";
 import { withHistory } from "slate-history";
 import { Upload, X } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import { Category } from "@/app/utils/interfaces";
 
 // Define custom types for plain text
 type CustomElement = {
@@ -45,6 +51,10 @@ const AddPhotoForm = () => {
   const [uploadedPhotoId, setUploadedPhotoId] = useState<string>("");
   const [error, setError] = useState("");
 
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [categoryError, setcategoryError] = useState("");
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const [editorValue, setEditorValue] =
@@ -52,6 +62,28 @@ const AddPhotoForm = () => {
 
   const renderElement = useCallback((props: any) => {
     return <p {...props.attributes}>{props.children}</p>;
+  }, []);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/categories", {
+          headers: { Accept: "application/json" },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        setcategoryError("Failed to load categories");
+      }
+    };
+
+    fetchCategories();
   }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -156,6 +188,21 @@ const AddPhotoForm = () => {
       }
 
       setUploadedPhotoId(createResult.id);
+
+      if (selectedCategory) {
+        await fetch(`http://localhost:3000/photos_categories/add`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            photo_id: uploadedPhotoId,
+            category_id: selectedCategory,
+          }),
+        });
+      }
+
       setUploadSuccess(true);
       clearForm();
     } catch (err) {
@@ -238,6 +285,28 @@ const AddPhotoForm = () => {
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           />
+        </div>
+
+        {/* Category Field */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Category
+          </label>
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          >
+            <option value="">Select a category</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          {categoryError && (
+            <p className="text-red-500 text-sm mt-1">{categoryError}</p>
+          )}
         </div>
 
         {/* Description Field */}

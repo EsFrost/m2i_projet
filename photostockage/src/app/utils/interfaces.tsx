@@ -5,6 +5,7 @@ export interface Photo {
   description: string;
   path: string;
   status: boolean;
+  category?: Category; // Optional because it might be loaded separately
 }
 
 export interface Comment {
@@ -20,4 +21,10 @@ export interface User {
   username: string;
   email: string;
   user_icon: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  description: string;
 }

@@ -2,10 +2,10 @@
 import React, { useState, useEffect, Fragment } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Photo } from "../../utils/interfaces";
 import { Likes } from "@/app/components/Likes";
 import { Comments } from "@/app/components/Comments";
 import DownloadButton from "@/app/components/DownloadButton";
+import { Photo, Category } from "@/app/utils/interfaces";
 
 export const SinglePhoto = () => {
   const [photo, setPhoto] = useState<Photo>({
@@ -16,6 +16,7 @@ export const SinglePhoto = () => {
     path: "",
     status: false,
   });
+  const [category, setCategory] = useState<Category | null>(null);
 
   const pathname = usePathname();
   const id = pathname?.split("/").pop();
@@ -30,21 +31,34 @@ export const SinglePhoto = () => {
       if (!id) return;
 
       try {
-        const response = await fetch(
-          `http://localhost:3000/photos/photo/${id}`,
-          {
+        // Fetch both photo and category data in parallel
+        const [photoResponse, categoryResponse] = await Promise.all([
+          fetch(`http://localhost:3000/photos/photo/${id}`, {
             headers: {
               Accept: "application/json",
             },
-          }
-        );
+          }),
+          fetch(`http://localhost:3000/photos_categories/photo/${id}`, {
+            headers: {
+              Accept: "application/json",
+            },
+          }),
+        ]);
 
-        if (!response.ok) {
-          throw new Error(`HTTP error status: ${response.status}`);
+        if (!photoResponse.ok) {
+          throw new Error(`HTTP error status: ${photoResponse.status}`);
         }
 
-        const data = await response.json();
-        setPhoto(data);
+        const photoData = await photoResponse.json();
+        setPhoto(photoData);
+
+        // Handle category data if it exists
+        if (categoryResponse.ok) {
+          const categoryData = await categoryResponse.json();
+          if (categoryData && categoryData.length > 0) {
+            setCategory(categoryData[0]);
+          }
+        }
       } catch (error) {
         setError(
           error instanceof Error ? error.message : "Failed to fetch photo."
@@ -168,6 +182,14 @@ export const SinglePhoto = () => {
           <DownloadButton onClick={handleDownload} />
         </div>
       </div>
+
+      {/* Add category display here */}
+      {category && (
+        <div className="mx-[10rem] mt-8">
+          <span className="text-gray-600">Category: </span>
+          <span className="font-medium">{category.name}</span>
+        </div>
+      )}
 
       <div className="mx-[10rem] mt-8">{photo.description}</div>
 
