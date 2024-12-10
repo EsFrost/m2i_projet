@@ -117,6 +117,7 @@ export default function LoginPage() {
       const expiresIn = 30 * 24 * 60 * 60 * 1000;
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("tokenExpires", String(Date.now() + expiresIn));
+      localStorage.setItem("userId", payload.id); // Add this line
       localStorage.setItem("user_icon", user.user_icon || "");
 
       window.dispatchEvent(new Event("storage"));
