@@ -17,6 +17,7 @@ import AddPhotoForm from "../components/dashboard/user/AddPhotoForm";
 import { MyPhotos } from "../components/dashboard/user/MyPhotos";
 import { Downloads } from "../components/dashboard/user/Downloads";
 import MyComments from "../components/dashboard/user/MyComments";
+import MyLikes from "../components/dashboard/user/MyLikes";
 
 const Photos = () => <div className="p-4">Photos Management</div>;
 const Comments = () => <div className="p-4">Comments Management</div>;
@@ -50,9 +51,9 @@ const userMenuOptions = [
   },
   {
     id: "favorites",
-    label: "My Favorites",
+    label: "My Likes",
     icon: Heart,
-    component: MyFavorites,
+    component: MyLikes,
   },
   {
     id: "downloads",
