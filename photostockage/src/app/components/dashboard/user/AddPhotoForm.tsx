@@ -5,6 +5,7 @@ import { withHistory } from "slate-history";
 import { Upload, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // Define custom types for plain text
 type CustomElement = {
@@ -53,6 +54,8 @@ const AddPhotoForm = () => {
   const renderElement = useCallback((props: any) => {
     return <p {...props.attributes}>{props.children}</p>;
   }, []);
+
+  const router = useRouter();
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -169,20 +172,12 @@ const AddPhotoForm = () => {
     return (
       <div className="text-center p-6">
         <p className="text-green-600 mb-4">Photo uploaded successfully!</p>
-        <div className="space-y-2">
-          <Link
-            href="/dashboard"
-            className="text-indigo-600 hover:text-indigo-700 block"
-          >
-            View My Photos
-          </Link>
-          <button
-            onClick={() => setUploadSuccess(false)}
-            className="text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded"
-          >
-            Upload Another Photo
-          </button>
-        </div>
+        <button
+          onClick={() => setUploadSuccess(false)}
+          className="text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded mt-4"
+        >
+          Upload Another Photo
+        </button>
       </div>
     );
   }

@@ -14,13 +14,11 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import AddPhotoForm from "../components/dashboard/user/AddPhotoForm";
+import { MyPhotos } from "../components/dashboard/user/MyPhotos";
 
-// Example dashboard components - replace with your actual components
-const DashboardHome = () => <div className="p-4">Dashboard Home Content</div>;
 const Photos = () => <div className="p-4">Photos Management</div>;
 const Comments = () => <div className="p-4">Comments Management</div>;
 const UsersManagement = () => <div className="p-4">Users Management</div>;
-const MyPhotos = () => <div className="p-4">My Photos</div>;
 const MyFavorites = () => <div className="p-4">My Favorites</div>;
 const MyDownloads = () => <div className="p-4">My Downloads</div>;
 const MyAccount = () => <div className="p-4">My Account</div>;
@@ -65,7 +63,7 @@ export default function Dashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    const checkAuth = () => {
+    const checkAuth = async () => {
       const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
       const tokenExpires = localStorage.getItem("tokenExpires");
       const userId = localStorage.getItem("userId");
@@ -77,23 +75,26 @@ export default function Dashboard() {
         return;
       }
 
-      fetch(`http://localhost:3000/user/user/${userId}`, {
-        credentials: "include",
-        headers: { Accept: "application/json" },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          const user = data[0];
-          const role = user.access_level ? "admin" : "user";
-          setUserRole(role);
-          const menuOptions =
-            role === "admin" ? adminMenuOptions : userMenuOptions;
-          setSelectedOption(menuOptions[0]);
-        })
-        .catch((error) => {
-          console.error("Error fetching user:", error);
-          router.push("/login");
-        });
+      try {
+        const response = await fetch(
+          `http://localhost:3000/user/user/${userId}`,
+          {
+            credentials: "include",
+            headers: { Accept: "application/json" },
+          }
+        );
+        const data = await response.json();
+        const user = data[0];
+        const role = user.access_level ? "admin" : "user";
+        setUserRole(role);
+
+        const menuOptions =
+          role === "admin" ? adminMenuOptions : userMenuOptions;
+        setSelectedOption(menuOptions[0]);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        router.push("/login");
+      }
     };
 
     checkAuth();
@@ -109,12 +110,14 @@ export default function Dashboard() {
 
   const handleOptionClick = (option: (typeof adminMenuOptions)[0]) => {
     if (option.id === "logout") {
-      // Implement logout logic
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("tokenExpires");
       router.push("/login");
       return;
     }
+
+    // For direct menu clicks, just update component and reset URL
+    router.push("/dashboard");
     setSelectedOption(option);
     setIsMenuOpen(false);
   };
