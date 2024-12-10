@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import AddPhotoForm from "../components/dashboard/user/AddPhotoForm";
 import { MyPhotos } from "../components/dashboard/user/MyPhotos";
 import { Downloads } from "../components/dashboard/user/Downloads";
+import MyComments from "../components/dashboard/user/MyComments";
 
 const Photos = () => <div className="p-4">Photos Management</div>;
 const Comments = () => <div className="p-4">Comments Management</div>;
@@ -45,7 +46,7 @@ const userMenuOptions = [
     id: "myComment",
     label: "My Comments",
     icon: MessageSquare,
-    component: Comments,
+    component: MyComments,
   },
   {
     id: "favorites",
