@@ -18,12 +18,11 @@ import { MyPhotos } from "../components/dashboard/user/MyPhotos";
 import { Downloads } from "../components/dashboard/user/Downloads";
 import MyComments from "../components/dashboard/user/MyComments";
 import MyLikes from "../components/dashboard/user/MyLikes";
+import MyAccount from "../components/dashboard/user/MyAccount";
 
 const Photos = () => <div className="p-4">Photos Management</div>;
 const Comments = () => <div className="p-4">Comments Management</div>;
 const UsersManagement = () => <div className="p-4">Users Management</div>;
-const MyFavorites = () => <div className="p-4">My Favorites</div>;
-const MyAccount = () => <div className="p-4">My Account</div>;
 
 // Menu configurations for different roles
 const adminMenuOptions = [
