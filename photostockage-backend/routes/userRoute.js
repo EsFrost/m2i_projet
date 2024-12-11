@@ -1,10 +1,10 @@
 const express = require("express");
 const userRouter = express.Router();
 const userController = require("../controllers/UserController");
-const { authMiddleware } = require("../middleware/authMiddleware");
+const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 
 /* method: GET */
-userRouter.get("/users", userController.showUsers);
+userRouter.get("/users", authMiddleware, isAdmin, userController.showUsers);
 userRouter.get("/user/:id", userController.showUser);
 userRouter.get("/username/:id", userController.showUsername);
 userRouter.get("/email/:email", userController.showUserByEmail);
@@ -15,7 +15,12 @@ userRouter.post("/login", userController.loginUser);
 userRouter.post("/logout", authMiddleware, userController.logoutUser);
 
 /* method: DELETE */
-userRouter.delete("/delete/:email", authMiddleware, userController.delUser);
+userRouter.delete(
+  "/delete/:email",
+  authMiddleware,
+  isAdmin,
+  userController.delUser
+);
 
 /* method: PUT */
 userRouter.put("/changepass", authMiddleware, userController.changePass);

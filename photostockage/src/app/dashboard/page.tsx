@@ -23,9 +23,9 @@ import MyAccount from "../components/dashboard/user/MyAccount";
 import AdminMyAccount from "../components/dashboard/administrator/MyAccount";
 import Categories from "../components/dashboard/administrator/Categories";
 import AdminComments from "../components/dashboard/administrator/Comments";
+import AdminUsers from "../components/dashboard/administrator/Users";
 
 const Photos = () => <div className="p-4">Photos Management</div>;
-const UsersManagement = () => <div className="p-4">Users Management</div>;
 
 // Menu configurations for different roles
 const adminMenuOptions = [
@@ -43,7 +43,7 @@ const adminMenuOptions = [
     icon: MessageSquare,
     component: AdminComments,
   },
-  { id: "users", label: "Users", icon: Users, component: UsersManagement },
+  { id: "users", label: "Users", icon: Users, component: AdminUsers },
   { id: "logout", label: "Logout", icon: LogOut, component: null },
 ];
 

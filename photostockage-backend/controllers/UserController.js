@@ -180,14 +180,18 @@ async function delUser(req, res) {
   email = sanitizeHtml(email);
 
   if (validator.isEmail(email)) {
-    if (email !== req.user.email) {
+    // Allow admins to delete any user
+    if (!req.user.access_level && email !== req.user.email) {
       return res
         .status(403)
         .json({ error: "Not authorized to delete this user" });
     }
     try {
       await userModel.deleteUser(email);
-      res.clearCookie("token");
+      // Only clear cookie if user is deleting their own account
+      if (email === req.user.email) {
+        res.clearCookie("token");
+      }
       res.status(200).json({ message: `User ${email} deleted successfully!` });
     } catch (err) {
       res
