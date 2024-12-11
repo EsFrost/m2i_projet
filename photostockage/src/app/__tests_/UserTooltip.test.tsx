@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import UserTooltip from "../components/UserTooltip";
+import UserTooltip from "@/app/components/UserTooltip";
 
 // Define props type to match the component's props
 interface UserTooltipProps {

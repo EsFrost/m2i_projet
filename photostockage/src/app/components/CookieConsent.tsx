@@ -19,7 +19,10 @@ const CookieConsent = () => {
   if (!showModal) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
+    <div
+      className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50"
+      role="complementary"
+    >
       <div className="max-w-7xl mx-auto p-6">
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="mb-4 md:mb-0 md:mr-4">
