@@ -59,6 +59,10 @@ function getUserComments(user_id) {
   );
 }
 
+function getAllComments() {
+  return pool.query(`SELECT * FROM comments ORDER BY id DESC`); // Added ordering
+}
+
 module.exports = {
   getPhotoComments,
   getAllPhotoComments,
@@ -68,4 +72,5 @@ module.exports = {
   getPhotoStatus,
   getCommentDetails,
   getUserComments,
+  getAllComments,
 };

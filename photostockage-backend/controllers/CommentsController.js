@@ -204,6 +204,24 @@ async function showUserComments(req, res) {
   }
 }
 
+/* Admin only */
+async function showAllComments(req, res) {
+  // Changed from showAllPhotoComments
+  try {
+    const commentResult = await commentsModel.getAllComments();
+
+    if (commentResult.rows.length === 0) {
+      return res.status(200).json([]); // Return empty array instead of 404
+    }
+
+    res.status(200).json(commentResult.rows);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ error: "Failed to fetch comments", details: err.message }); // Updated error message
+  }
+}
+
 module.exports = {
   showActivePhotoComments,
   showAllPhotoComments,
@@ -211,4 +229,5 @@ module.exports = {
   editComment,
   deleteComment,
   showUserComments,
+  showAllComments,
 };

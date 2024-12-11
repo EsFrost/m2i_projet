@@ -11,6 +11,12 @@ commentsRouter.get(
   authMiddleware,
   commentsController.showUserComments
 );
+commentsRouter.get(
+  "/",
+  authMiddleware,
+  isAdmin,
+  commentsController.showAllComments
+);
 
 /* Protected routes - require authentication */
 // Add new comment
