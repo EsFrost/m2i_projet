@@ -4,10 +4,12 @@ import { Comment, User } from "../utils/interfaces";
 import SlateEditor from "./SlateEditor";
 import { FaRegCircleUser } from "react-icons/fa6";
 import Image from "next/image";
+import UserTooltip from "./UserTooltip";
 
 interface CommentWithUser extends Comment {
   username?: string;
   user_icon?: string;
+  email?: string;
 }
 
 export const Comments = ({ photo_id }: { photo_id: string }) => {
@@ -58,7 +60,14 @@ export const Comments = ({ photo_id }: { photo_id: string }) => {
 
       const userMap = new Map(
         usersData.flatMap((user) => [
-          [user.id, { username: user.username, user_icon: user.user_icon }],
+          [
+            user.id,
+            {
+              username: user.username,
+              user_icon: user.user_icon,
+              email: user.email,
+            },
+          ],
         ])
       );
 
@@ -66,11 +75,13 @@ export const Comments = ({ photo_id }: { photo_id: string }) => {
         const userData = userMap.get(comment.id_user) || {
           username: "Unknown User",
           user_icon: "",
+          email: "",
         };
         return {
           ...comment,
           username: userData.username,
           user_icon: userData.user_icon,
+          email: userData.email,
         };
       });
 
@@ -157,7 +168,10 @@ export const Comments = ({ photo_id }: { photo_id: string }) => {
             ) : (
               <FaRegCircleUser className="w-6 h-6 text-gray-600" />
             )}
-            <span>{comment.username}</span>
+            <UserTooltip
+              username={comment.username || "Unknown User"}
+              email={comment.email || "No email available"}
+            />
           </div>
         </div>
       ))}

@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation";
 import { Likes } from "@/app/components/Likes";
 import { Comments } from "@/app/components/Comments";
 import DownloadButton from "@/app/components/DownloadButton";
-import { Photo, Category } from "@/app/utils/interfaces";
+import { Photo, Category, User } from "@/app/utils/interfaces";
+import UserTooltip from "@/app/components/UserTooltip";
 
 export const SinglePhoto = () => {
   const [photo, setPhoto] = useState<Photo>({
@@ -17,6 +18,7 @@ export const SinglePhoto = () => {
     status: false,
   });
   const [category, setCategory] = useState<Category | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const pathname = usePathname();
   const id = pathname?.split("/").pop();
@@ -51,6 +53,31 @@ export const SinglePhoto = () => {
 
         const photoData = await photoResponse.json();
         setPhoto(photoData);
+
+        const fetchUser = async () => {
+          const userResponse = await fetch(
+            `http://localhost:3000/user/user/${photoData.user_id}`,
+            {
+              headers: {
+                Accept: "application/json",
+              },
+            }
+          );
+
+          if (!userResponse.ok) {
+            throw new Error(`HTTP error status: ${userResponse.status}`);
+          }
+
+          const userData = await userResponse.json();
+          return userData;
+        };
+
+        const userRes = await fetchUser();
+        if (userRes && userRes.length > 0) {
+          photoData.user = userRes[0];
+        }
+
+        setUser(userRes[0]);
 
         // Handle category data if it exists
         if (categoryResponse.ok) {
@@ -143,7 +170,6 @@ export const SinglePhoto = () => {
       window.URL.revokeObjectURL(downloadUrl);
     } catch (error) {
       console.error("Download failed:", error);
-      // You might want to add some error handling UI here
     }
   };
 
@@ -177,24 +203,34 @@ export const SinglePhoto = () => {
             unoptimized
           />
         </div>
+        {/* Display user information */}
+        {user && (
+          <div className="mt-8 text-gray-600">
+            Created by{" "}
+            <UserTooltip
+              username={user.username}
+              email={user.email}
+              className="font-medium"
+            />
+          </div>
+        )}
         <div className="mt-8 flex justify-between">
           <Likes photo_id={photo.id} />
           <DownloadButton onClick={handleDownload} />
         </div>
-      </div>
 
-      {/* Add category display here */}
-      {category && (
-        <div className="mx-[10rem] mt-8">
-          <span className="text-gray-600">Category: </span>
-          <span className="font-medium">{category.name}</span>
+        {/* Add category display here */}
+        {category && (
+          <div className="mt-8">
+            <span className="text-gray-600">Category: </span>
+            <span className="font-medium">{category.name}</span>
+          </div>
+        )}
+        <div className="mt-8">{photo.description}</div>
+
+        <div className="mt-8">
+          <Comments photo_id={photo.id} />
         </div>
-      )}
-
-      <div className="mx-[10rem] mt-8">{photo.description}</div>
-
-      <div className="mt-8">
-        <Comments photo_id={photo.id} />
       </div>
     </>
   ) : (

@@ -4,7 +4,7 @@ const userController = require("../controllers/UserController");
 const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 
 /* method: GET */
-userRouter.get("/users", authMiddleware, isAdmin, userController.showUsers);
+userRouter.get("/users", userController.showUsers);
 userRouter.get("/user/:id", userController.showUser);
 userRouter.get("/username/:id", userController.showUsername);
 userRouter.get("/email/:email", userController.showUserByEmail);

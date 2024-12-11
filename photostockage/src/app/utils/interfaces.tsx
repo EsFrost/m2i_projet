@@ -6,6 +6,10 @@ export interface Photo {
   path: string;
   status: boolean;
   category?: Category; // Optional because it might be loaded separately
+  user?: {
+    username: string;
+    email: string;
+  };
 }
 
 export interface Comment {

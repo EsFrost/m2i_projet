@@ -36,7 +36,7 @@ export const Footer = () => {
                 <li>
                   <Link
                     className="text-gray-600 hover:text-gray-800 text-sm"
-                    href="/"
+                    href="/login"
                   >
                     Login
                   </Link>
@@ -44,7 +44,7 @@ export const Footer = () => {
                 <li>
                   <Link
                     className="text-gray-600 hover:text-gray-800 text-sm"
-                    href="/"
+                    href="/register"
                   >
                     Sign up
                   </Link>
@@ -62,7 +62,7 @@ export const Footer = () => {
                 <li>
                   <Link
                     className="text-gray-600 hover:text-gray-800 text-sm"
-                    href="/"
+                    href="/contact"
                   >
                     For suggestions
                   </Link>
@@ -70,7 +70,7 @@ export const Footer = () => {
                 <li>
                   <Link
                     className="text-gray-600 hover:text-gray-800 text-sm"
-                    href="/"
+                    href="/contact"
                   >
                     For questions
                   </Link>
@@ -78,7 +78,7 @@ export const Footer = () => {
                 <li>
                   <Link
                     className="text-gray-600 hover:text-gray-800 text-sm"
-                    href="/"
+                    href="/contact"
                   >
                     Contact us here
                   </Link>
