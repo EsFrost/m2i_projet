@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Trash2, Save, X } from "lucide-react";
 import { FaRegCircleUser } from "react-icons/fa6";
 
-const MyAccount = () => {
+const AdminMyAccount = () => {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -13,6 +13,7 @@ const MyAccount = () => {
     username: "",
     email: "",
     user_icon: "",
+    access_level: 1,
   });
 
   const [formData, setFormData] = useState({
@@ -217,7 +218,7 @@ const MyAccount = () => {
         },
         body: JSON.stringify({
           email: user.email,
-          currentPassword: passwordData.oldPassword, // Changed from oldPassword to currentPassword
+          currentPassword: passwordData.oldPassword,
           newPassword: passwordData.newPassword,
         }),
       });
@@ -281,7 +282,7 @@ const MyAccount = () => {
       {/* Profile Section */}
       <div className="bg-white p-6 rounded-lg shadow space-y-6">
         <h2 className="text-xl font-semibold border-b pb-2">
-          Profile Information
+          Administrator Profile
         </h2>
 
         {/* Profile Picture */}
@@ -475,8 +476,9 @@ const MyAccount = () => {
           Delete Account
         </h2>
         <p className="text-gray-600 my-4">
-          Once you delete your account, there is no going back. Please be
-          certain.
+          Warning: Deleting your administrator account will remove all
+          administrative privileges. Please ensure there is another
+          administrator account before proceeding.
         </p>
         <button
           onClick={handleDeleteAccount}
@@ -491,4 +493,4 @@ const MyAccount = () => {
   );
 };
 
-export default MyAccount;
+export default AdminMyAccount;

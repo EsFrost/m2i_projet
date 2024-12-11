@@ -19,6 +19,7 @@ import { Downloads } from "../components/dashboard/user/Downloads";
 import MyComments from "../components/dashboard/user/MyComments";
 import MyLikes from "../components/dashboard/user/MyLikes";
 import MyAccount from "../components/dashboard/user/MyAccount";
+import AdminMyAccount from "../components/dashboard/administrator/MyAccount";
 
 const Photos = () => <div className="p-4">Photos Management</div>;
 const Comments = () => <div className="p-4">Comments Management</div>;
@@ -26,7 +27,7 @@ const UsersManagement = () => <div className="p-4">Users Management</div>;
 
 // Menu configurations for different roles
 const adminMenuOptions = [
-  { id: "account", label: "My Account", icon: User, component: MyAccount },
+  { id: "account", label: "My Account", icon: User, component: AdminMyAccount },
   { id: "photos", label: "Photos", icon: Upload, component: Photos },
   {
     id: "comments",
@@ -83,23 +84,15 @@ export default function Dashboard() {
       }
 
       try {
-        const response = await fetch(
-          `http://localhost:3000/user/user/${userId}`,
-          {
-            credentials: "include",
-            headers: { Accept: "application/json" },
-          }
-        );
-        const data = await response.json();
-        const user = data[0];
-        const role = user.access_level ? "admin" : "user";
+        const accessLevel = localStorage.getItem("access_level");
+        const role = accessLevel === "true" ? "admin" : "user";
         setUserRole(role);
 
         const menuOptions =
           role === "admin" ? adminMenuOptions : userMenuOptions;
         setSelectedOption(menuOptions[0]);
       } catch (error) {
-        console.error("Error fetching user:", error);
+        console.error("Error checking authorization:", error);
         router.push("/login");
       }
     };
@@ -119,6 +112,8 @@ export default function Dashboard() {
     if (option.id === "logout") {
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("tokenExpires");
+      localStorage.removeItem("user_icon");
+      localStorage.removeItem("userId");
       router.push("/login");
       return;
     }

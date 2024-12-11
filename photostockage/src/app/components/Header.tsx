@@ -53,6 +53,7 @@ export const Header = () => {
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("tokenExpires");
         localStorage.removeItem("user_icon");
+        localStorage.removeItem("userId");
         setIsLoggedIn(false);
         router.push("/");
         window.dispatchEvent(new Event("logoutEvent"));
