@@ -8,7 +8,6 @@
 
 - Add username of uploader of photo, when hovering over names show their emails
 - Fix missing links
-- Add 404 page
 - Create documentation
 
 ---
