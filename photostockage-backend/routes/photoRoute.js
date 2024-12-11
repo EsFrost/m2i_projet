@@ -1,10 +1,10 @@
 const express = require("express");
 const photoRouter = express.Router();
 const photoController = require("../controllers/PhotoController");
-const { authMiddleware } = require("../middleware/authMiddleware");
+const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 
 /* method: GET */
-photoRouter.get("/photos/admin", photoController.showPhotos);
+photoRouter.get("/admin", authMiddleware, isAdmin, photoController.showPhotos);
 photoRouter.get("/photos", photoController.showActivePhotos);
 photoRouter.get("/photo/:id", photoController.showPhoto);
 photoRouter.get("/photos/user/:id", photoController.showUserPhotos);
