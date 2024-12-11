@@ -11,6 +11,7 @@ import {
   Heart,
   Download,
   Plus,
+  ChartBar,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import AddPhotoForm from "../components/dashboard/user/AddPhotoForm";
@@ -20,6 +21,7 @@ import MyComments from "../components/dashboard/user/MyComments";
 import MyLikes from "../components/dashboard/user/MyLikes";
 import MyAccount from "../components/dashboard/user/MyAccount";
 import AdminMyAccount from "../components/dashboard/administrator/MyAccount";
+import Categories from "../components/dashboard/administrator/Categories";
 
 const Photos = () => <div className="p-4">Photos Management</div>;
 const Comments = () => <div className="p-4">Comments Management</div>;
@@ -29,6 +31,12 @@ const UsersManagement = () => <div className="p-4">Users Management</div>;
 const adminMenuOptions = [
   { id: "account", label: "My Account", icon: User, component: AdminMyAccount },
   { id: "photos", label: "Photos", icon: Upload, component: Photos },
+  {
+    id: "categories",
+    label: "Categories",
+    icon: ChartBar,
+    component: Categories,
+  },
   {
     id: "comments",
     label: "Comments",

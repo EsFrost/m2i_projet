@@ -25,7 +25,7 @@ function createCategory(id, name, description) {
 /* Edit category, admin only */
 function editCategory(id, name, description) {
   return pool.query(
-    `UPDATE categories SET name = $1, description = $2 WHERE id = $3 RETURNING (id, name)`,
+    `UPDATE categories SET name = $2, description = $3 WHERE id = $1 RETURNING (id, name)`,
     [id, name, description]
   );
 }
