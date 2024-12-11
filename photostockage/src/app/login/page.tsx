@@ -267,18 +267,12 @@ export default function LoginPage() {
                 <p className="text-sm text-gray-600">
                   Don&apos;t have an account?{" "}
                   <Link
-                    href="/sign-up"
+                    href="/register"
                     className="text-indigo-500 hover:text-indigo-600"
                   >
                     Sign up here
                   </Link>
                 </p>
-                <Link
-                  href="/forgot-password"
-                  className="text-sm text-indigo-500 hover:text-indigo-600 block mt-2"
-                >
-                  Forgot your password?
-                </Link>
               </div>
             </div>
           </form>

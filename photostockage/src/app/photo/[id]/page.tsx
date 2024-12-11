@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Likes } from "@/app/components/Likes";
@@ -8,7 +8,7 @@ import DownloadButton from "@/app/components/DownloadButton";
 import { Photo, Category, User } from "@/app/utils/interfaces";
 import UserTooltip from "@/app/components/UserTooltip";
 
-export const SinglePhoto = () => {
+export default function PhotoPage() {
   const [photo, setPhoto] = useState<Photo>({
     id: "",
     user_id: "",
@@ -16,6 +16,12 @@ export const SinglePhoto = () => {
     description: "",
     path: "",
     status: false,
+    user: {
+      username: "",
+      email: "",
+      id: "",
+      user_icon: "",
+    },
   });
   const [category, setCategory] = useState<Category | null>(null);
   const [user, setUser] = useState<User | null>(null);
@@ -25,7 +31,6 @@ export const SinglePhoto = () => {
 
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
-
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
@@ -75,9 +80,8 @@ export const SinglePhoto = () => {
         const userRes = await fetchUser();
         if (userRes && userRes.length > 0) {
           photoData.user = userRes[0];
+          setUser(userRes[0]);
         }
-
-        setUser(userRes[0]);
 
         // Handle category data if it exists
         if (categoryResponse.ok) {
@@ -238,6 +242,4 @@ export const SinglePhoto = () => {
       <p>This photo has been made private.</p>
     </div>
   );
-};
-
-export default SinglePhoto;
+}

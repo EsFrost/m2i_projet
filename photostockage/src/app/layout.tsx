@@ -11,9 +11,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "photoStockage",
   description: "A site where you can share your photos",
+  manifest: "/manifest.json",
   icons: {
     icon: "/favicon.ico",
   },
+  themeColor: "#6366F1",
 };
 
 export default function RootLayout({

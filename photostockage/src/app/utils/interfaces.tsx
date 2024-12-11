@@ -9,6 +9,8 @@ export interface Photo {
   user?: {
     username: string;
     email: string;
+    id?: string;
+    user_icon?: string;
   };
 }
 
