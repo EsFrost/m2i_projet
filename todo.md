@@ -6,9 +6,9 @@
 
 # Frontend
 
-- Create a dashboard for users and admins
 - Add username of uploader of photo, when hovering over names show their emails
-- Add to the top button
+- Fix missing links
+- Add 404 page
 - Create documentation
 
 ---
