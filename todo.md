@@ -7,7 +7,6 @@
 # Frontend
 
 - Unit testing
-- Progressive web app?
 - Create documentation
 
 ---
