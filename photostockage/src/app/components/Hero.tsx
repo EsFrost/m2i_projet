@@ -105,7 +105,7 @@ export const Hero = () => {
             height={0}
             alt="Picture"
             sizes="100vw"
-            className="object-cover object-center rounded w-[720px] xl:w-[520px] 2xl:w-[480px] min-w-[420px]"
+            className="object-cover object-center rounded w-[720px] xl:w-[520px] 2xl:w-[480px] min-w-[420px] hidden md:block"
           />
         </div>
       </div>
