@@ -6,9 +6,8 @@
 
 # Frontend
 
-- Unit testing
 - Create documentation
 
 ---
 
-### **_Updated at :_** 11-12-24
+### **_Updated at :_** 14-12-24
