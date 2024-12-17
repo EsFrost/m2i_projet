@@ -6,8 +6,10 @@
 
 # Frontend
 
+## Frontend was finished on 12-12-24
+
 - Create documentation
 
 ---
 
-### **_Updated at :_** 15-12-24
+### **_Updated at :_** 17-12-24
