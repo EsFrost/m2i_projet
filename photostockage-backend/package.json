@@ -4,7 +4,8 @@
   "description": "Backend for a project for my training at m2i",
   "main": "index.js",
   "scripts": {
-    "test": "set NODE_ENV=test&& jest --runInBand --detectOpenHandles --forceExit"
+    "test": "set NODE_ENV=test&& jest --runInBand --detectOpenHandles --forceExit",
+    "start": "npx nodemon index.js"
   },
   "keywords": [
     "backend",
