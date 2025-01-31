@@ -1,0 +1,58 @@
+Index
+
+1. Introduction
+   2 pages max
+   Objective of the Document: Why this dossier exists and its role in the project.
+   Project Overview: Summarize the project in half a page, mentioning:
+   Type of application (web, mobile, or both).
+   Purpose (e.g., e-commerce, social networking, etc.).
+   Key features.
+   Audience and Stakeholders: Identify users and other stakeholders.
+2. Project Scope and Architecture
+   3 pages max
+   Scope: List the features and boundaries of the project in bullet points or a small table.
+   Architecture Overview:
+   Add a diagram (e.g., a system flow or client-server architecture).
+   Brief explanation of the technical architecture, including backend, frontend, and database interactions.
+   Mention cloud infrastructure if used (e.g., AWS, Azure).
+3. Code implementation
+   6 pages max
+   Backend examples with images and code explanation
+   Frontend
+   DB
+4. Design and User Experience
+   max 3 pages
+   Wireframes: Add 1-2 wireframes with a brief explanation.
+   User Flow: Include a simple diagram or list for the primary user journey.
+   Visual Design: Add a screenshot of a completed screen or component.
+5. Data Management
+   max 2 pages
+   Database Schema:
+   Show a database diagram (ERD) and explain relationships.
+   Data Security:
+   Mention encryption methods, authentication, and sensitive data handling.
+6. Testing
+   max 2 pages
+   Testing strategy with examples
+   But / Error management
+7. Deployment and Maintenance
+   max 2 pages
+   Deployment Process
+   Maintenance
+8. Challenges and Solutions
+   max 1 page
+   List of 2-3 key challenges and their solutions.
+9. Documentation and Conclusion
+   max 2 pages
+   Technical Documentation:
+   Mention code documentation tools (e.g., JSDoc, Swagger).
+   Provide an example of a well-documented function or class.
+   User Documentation: Briefly explain how users interact with the app.
+   Conclusion:
+   Reflect on what you learned.
+   Mention possible improvements or scalability.
+10. Annexes
+    max 2
+    Screenshots of your app or mobile interface.
+    Additional wireframes, diagrams, or testing reports.
+    Links to the repository or demo.
