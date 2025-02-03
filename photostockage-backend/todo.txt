@@ -1,0 +1,1 @@
+i want to add an endpoint that returns all of the user's comments and the related names and ids of the photos that they commented on plus the status of the comment (in addition to the content)
