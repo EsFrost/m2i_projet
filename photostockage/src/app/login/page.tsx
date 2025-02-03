@@ -84,53 +84,6 @@ export default function LoginPage() {
     };
   };
 
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   setLoginError("");
-  //   if (!validateForm()) return;
-  //   setIsLoading(true);
-
-  //   try {
-  //     const response = await fetch("http://localhost:3000/user/login", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       credentials: "include",
-  //       body: JSON.stringify(sanitizeData(formData)),
-  //     });
-
-  //     const loginData = await response.json();
-  //     const token = loginData.token;
-  //     const tokenParts = token.split(".");
-  //     const payload = JSON.parse(atob(tokenParts[1]));
-
-  //     const userResponse = await fetch(
-  //       `http://localhost:3000/user/user/${payload.id}`,
-  //       {
-  //         credentials: "include",
-  //         headers: { Accept: "application/json" },
-  //       }
-  //     );
-
-  //     const userData = await userResponse.json();
-  //     const user = userData[0]; // Access first element of array
-
-  //     const expiresIn = 30 * 24 * 60 * 60 * 1000;
-  //     localStorage.setItem("isLoggedIn", "true");
-  //     localStorage.setItem("tokenExpires", String(Date.now() + expiresIn));
-  //     localStorage.setItem("userId", payload.id); // Add this line
-  //     localStorage.setItem("user_icon", user.user_icon || "");
-
-  //     window.dispatchEvent(new Event("storage"));
-  //     router.push("/");
-  //   } catch (error) {
-  //     console.error("Login error:", error);
-  //     setLoginError("Login failed. Please check your credentials.");
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  // In login/page.tsx, update handleSubmit:
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoginError("");
