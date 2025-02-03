@@ -47,7 +47,7 @@ async function showCategoryByName(req, res) {
 }
 
 async function createCategory(req, res) {
-  // Check if user has admin access (belt and suspenders, since middleware also checks)
+  // Check if user has admin access
   if (!req.user || !req.user.access_level) {
     return res.status(403).json({ error: "Admin access required" });
   }
