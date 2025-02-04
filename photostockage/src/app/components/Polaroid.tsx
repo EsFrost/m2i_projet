@@ -12,7 +12,7 @@ export const Polaroid = () => {
   const [isLoading, setIsLoading] = useState(true); // To fix race conditions messing with the front page
 
   useEffect(() => {
-    let isMounted = true; // flag
+    let isMounted = true; // Flag
 
     const fetchData = async () => {
       setIsLoading(true); // Set loading state
@@ -35,7 +35,7 @@ export const Polaroid = () => {
         //   }),
         // ]);
 
-        if (!isMounted) return; // Add this check
+        if (!isMounted) return; // Check
 
         if (!imagesResponse.ok || !categoriesResponse.ok) {
           throw new Error("Failed to fetch data");
@@ -46,12 +46,12 @@ export const Polaroid = () => {
           categoriesResponse.json(),
         ]);
 
-        if (!isMounted) return; // check
+        if (!isMounted) return; // Check
 
         setImages(imagesData);
         setCategories(categoriesData);
       } catch (error) {
-        if (!isMounted) return; // check
+        if (!isMounted) return; // Check
         console.error("Error fetching data:", error);
       } finally {
         if (isMounted) {
