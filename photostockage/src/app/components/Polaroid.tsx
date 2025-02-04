@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Photo, Category } from "@/app/utils/interfaces";
+// import { trackedFetch } from "../utils/requestTracker"; // Imports the trackedFetch function
 
 export const Polaroid = () => {
   const [images, setImages] = useState<Photo[]>();
@@ -22,6 +23,15 @@ export const Polaroid = () => {
             headers: { Accept: "application/json" },
           }),
         ]);
+        /* Using trackedFetch */
+        // const [imagesResponse, categoriesResponse] = await Promise.all([
+        //   trackedFetch("http://localhost:3000/photos/photos", {
+        //     headers: { Accept: "application/json" },
+        //   }),
+        //   trackedFetch("http://localhost:3000/categories", {
+        //     headers: { Accept: "application/json" },
+        //   }),
+        // ]);
 
         if (!isMounted) return; // Add this check
 

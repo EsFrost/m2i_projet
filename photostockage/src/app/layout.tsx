@@ -5,6 +5,7 @@ import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import CookieConsent from "./components/CookieConsent";
 import BackToTopButton from "./components/BackToTopButton";
+// import RequestStats from "./components/RequestStats"; // imports the Component
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +31,8 @@ export default function RootLayout({
         <Footer />
         <CookieConsent />
         <BackToTopButton />
+        {/* For tracking requests */}
+        {/* <RequestStats /> */}
       </body>
     </html>
   );
