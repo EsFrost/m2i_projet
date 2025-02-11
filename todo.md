@@ -10,6 +10,10 @@
 
 - Create documentation
 
+## Dossier pro
+
+- Activity: add flutter and detail backend and the app (two examples only but three activities)
+
 ---
 
 ### **_Updated at :_** 06-02-25
