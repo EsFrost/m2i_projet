@@ -76,6 +76,7 @@ export default function ContactUs() {
           </p>
         </div>
 
+        {/*  */}
         <div className="hidden md:block absolute top-4 bottom-4 left-1/3 w-px bg-blue-900"></div>
 
         <div className="w-full md:w-2/3 md:pl-4">
