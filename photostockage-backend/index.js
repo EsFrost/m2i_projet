@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const helmet = require("helmet");
+const helmet = require("helmet"); // Sets headers automatically to protect from web vulnerabilities
 const rateLimit = require("express-rate-limit");
-const cookieParser = require("cookie-parser"); // Add this line
+const cookieParser = require("cookie-parser");
 const userRoute = require("./routes/userRoute");
 const photoRoute = require("./routes/photoRoute");
 const categoriesRoute = require("./routes/categoriesRoute");

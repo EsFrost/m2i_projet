@@ -217,7 +217,6 @@ export const MyPhotos = () => {
 
       // Update category if changed
       if (selectedCategory) {
-        // First, we'll add the new category relationship
         await fetch(`http://localhost:3000/photos_categories/add`, {
           method: "POST",
           headers: {

@@ -1,4 +1,3 @@
-// __tests__/setup/testDb.js
 const { pool } = require("../../utils/db");
 
 async function cleanDatabase() {

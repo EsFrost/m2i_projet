@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { FcLike } from "react-icons/fc";
-import Link from "next/link";
 
 export const Likes = ({ photo_id }: { photo_id: string }) => {
   const router = useRouter();
@@ -13,8 +12,6 @@ export const Likes = ({ photo_id }: { photo_id: string }) => {
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-
-  const test = 1;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -107,7 +104,7 @@ export const Likes = ({ photo_id }: { photo_id: string }) => {
 
   const handleLikeUnlike = async () => {
     if (!isAuthenticated) {
-      router.push("/login"); // Replace with your login route
+      router.push("/login");
       return;
     }
 

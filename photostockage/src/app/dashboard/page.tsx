@@ -147,8 +147,6 @@ export default function Dashboard() {
         <Menu className="w-6 h-6" />
       </button>
 
-      {/* Mobile Overlay and Menu code stays the same */}
-
       <div className="flex">
         {/* Desktop Sidebar */}
         <div

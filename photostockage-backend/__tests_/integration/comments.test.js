@@ -1,4 +1,3 @@
-// __tests__/integration/comments.test.js
 const request = require("supertest");
 const app = require("../../index");
 const { pool } = require("../../utils/db");

@@ -217,7 +217,7 @@ const MyAccount = () => {
         },
         body: JSON.stringify({
           email: user.email,
-          currentPassword: passwordData.oldPassword, // Changed from oldPassword to currentPassword
+          currentPassword: passwordData.oldPassword,
           newPassword: passwordData.newPassword,
         }),
       });
